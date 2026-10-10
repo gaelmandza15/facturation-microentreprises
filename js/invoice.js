@@ -251,9 +251,12 @@ function buildPreview(inv) {
     if (inv.status) {
         const cls = inv.status === 'Payée' ? 'payee' : inv.status === 'En attente' ? 'en-attente' : 'brouillon';
         pill.textContent = statusLabel(inv.status);
-        pill.className = 'pi-status ' + cls;
+        // On ajoute la classe de couleur SANS retirer 'hidden' géré ailleurs.
+        ['payee', 'en-attente', 'brouillon'].forEach(c => pill.classList.remove(c));
+        pill.classList.add(cls);
+        pill.classList.remove('hidden');
     } else {
-        pill.className = 'pi-status hidden';
+        pill.classList.add('hidden');
     }
 
     // Blocs De / Facture a
@@ -267,6 +270,12 @@ function buildPreview(inv) {
     $('print-client-details').textContent = clientLines.join('\n');
 
     // Lignes de prestation
+    const exempt = !!state.settings.tvaExempt;
+    // En-tete de colonne TVA : meme logique que les cellules (inline display:none
+    // pose par applyTvaDisplaySettings, seul 'hidden' est fiable).
+    const tvaTh = $('print-tva-th');
+    if (exempt) { tvaTh.classList.add('hidden'); tvaTh.style.display = 'none'; }
+    else { tvaTh.classList.remove('hidden'); tvaTh.style.display = ''; }
     const rows = (inv.items || []).filter(it => it.desc);
     $('print-items-body').innerHTML = rows.map((it, i) => `
         <tr>
@@ -274,7 +283,7 @@ function buildPreview(inv) {
             <td>${escHtml(it.desc)}</td>
             <td class="center num">${escHtml(it.qty)}</td>
             <td class="right num">${fmtMoney(it.unitPrice)}</td>
-            <td class="print-tva-col center num">${escHtml(it.tva)}%</td>
+            <td class="print-tva-col center num${exempt ? ' hidden' : ''}">${escHtml(it.tva)}%</td>
             <td class="right num line-total">${fmtMoney(it.totalHt)}</td>
         </tr>`).join('');
 
@@ -287,7 +296,13 @@ function buildPreview(inv) {
     } else {
         discRow.classList.add('hidden');
     }
+    // Ligne TVA : masquée proprement en franchise (la classe 'hidden' est la
+    // seule méthode fiable ici — applyTvaDisplaySettings met un display:none
+    // inline sur .print-tva-col, donc les règles CSS !important ne passent pas).
     $('print-tva').textContent = fmtMoney(inv.tvaTotal);
+    const tvaRow = $('print-tva-row');
+    if (exempt) { tvaRow.classList.add('hidden'); tvaRow.style.display = 'none'; }
+    else { tvaRow.classList.remove('hidden'); tvaRow.style.display = ''; }
     $('print-total-net').textContent = fmtMoney(inv.totalNet);
 
     // IBAN & conditions
@@ -364,5 +379,21 @@ function closeInvoicePreview() {
 }
 
 function printInvoiceFromPreview() {
-    desktopPrint();
+    // Filet de sécurité : si la modale n'est pas ouverte (bouton fantôme,
+    // raccourci clavier), on régénère l'aperçu avant d'imprimer.
+    const modal = document.getElementById('modal-preview');
+    if (modal.classList.contains('hidden')) {
+        openInvoicePreview();
+    }
+    // Laisse le temps au navigateur de re-flayer la feuille A4 après le
+    // démasquage, sinon window.print() peut capturer un contenu vide.
+    requestAnimationFrame(() => setTimeout(() => desktopPrint(), 50));
 }
+
+// Fermeture de l'aperçu au clavier (Echap), comme les autres modales.
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const modal = document.getElementById('modal-preview');
+        if (modal && !modal.classList.contains('hidden')) closeInvoicePreview();
+    }
+});

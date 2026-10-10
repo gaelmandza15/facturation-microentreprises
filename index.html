@@ -672,8 +672,10 @@
                         </div>
                     </div>
                     <div class="pi-meta">
-                        <div class="pi-badge" data-i18n="print.badge">FACTURE</div>
-                        <div id="print-status-pill" class="pi-status hidden"></div>
+                        <div class="pi-badge-row">
+                            <div class="pi-badge" data-i18n="print.badge">FACTURE</div>
+                            <div id="print-status-pill" class="pi-status hidden"></div>
+                        </div>
                         <h2 id="print-inv-number"></h2>
                         <dl class="pi-dates">
                             <div><dt data-i18n="print.date">Date :</dt><dd id="print-inv-date"></dd></div>
@@ -702,7 +704,7 @@
                             <th data-i18n="print.colDescription">Description</th>
                             <th class="center" style="width:56px;" data-i18n="invoice.colQty">Qté</th>
                             <th class="right" style="width:110px;" data-i18n="print.colUnitPrice">Prix Unit. HT</th>
-                            <th class="print-tva-col center" style="width:64px;" data-i18n="invoice.colTva">TVA %</th>
+                            <th id="print-tva-th" class="center print-tva-col hidden" style="width:64px;" data-i18n="invoice.colTva">TVA %</th>
                             <th class="right" style="width:110px;" data-i18n="print.colTotalHt">Total HT</th>
                         </tr>
                     </thead>
