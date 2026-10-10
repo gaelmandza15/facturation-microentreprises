@@ -379,7 +379,7 @@ function resetCountryConfig() {
     saveState();
     applyCountrySettings();
     renderCountryConfigForm();
-    showToast(`Configuration de ${getCountry(code).name} réinitialisée (valeurs indicatives).`);
+    showToast(t("toast.countryConfigReset", { name: getCountry(code).name }));
 }
 
 // Remplit le formulaire de personnalisation avec les valeurs actuelles du pays sélectionné
@@ -423,7 +423,7 @@ function saveCountryOverrides() {
     saveState();
     applyCountrySettings();
     renderCountryConfigForm();
-    showToast("Configuration pays personnalisée enregistrée.");
+    showToast(t("toast.countryConfigSaved"));
 }
 
 function currentCountry() {

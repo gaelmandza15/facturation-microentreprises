@@ -11,6 +11,7 @@ const DEFAULT_STATE = {
         country: "FR",      // Pays fiscal de l'entreprise (voir js/countries.js)
         currency: "EUR",    // Devise d'affichage (synchronisée avec le pays)
         locale: "fr",       // Format des nombres (virgule/point, position du symbole)
+        lang: "en",           // Langue de l'interface i18n : anglais par défaut ("fr" possible)
         // Personnalisation par pays (les réglementations changent : tout est modifiable
         // dans Paramètres > Configuration personnalisée du pays). Clé = code pays.
         countryOverrides: {},

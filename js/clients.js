@@ -18,18 +18,18 @@ function renderClientsGrid() {
             <div class="client-head">
                 <div>
                     <div class="client-name">${c.name}</div>
-                    <span class="client-meta">${c.siret ? currentCountry().taxIdLabel + ' : ' + c.siret : 'Identifiant fiscal non renseigné'}</span>
+                    <span class="client-meta">${c.siret ? currentCountry().taxIdLabel + ' : ' + c.siret : t('clients.taxIdMissing')}</span>
                 </div>
                 <div style="display:flex;gap:6px;">
-                    <button onclick="editClient('${c.id}')" class="icon-btn" title="Modifier"><i class="fa-solid fa-pen"></i></button>
-                    <button onclick="deleteClient('${c.id}')" class="icon-btn danger" title="Supprimer"><i class="fa-solid fa-trash"></i></button>
+                    <button onclick="editClient('${c.id}')" class="icon-btn" title="${t('clients.editTitle')}"><i class="fa-solid fa-pen"></i></button>
+                    <button onclick="deleteClient('${c.id}')" class="icon-btn danger" title="${t('clients.deleteTitle')}"><i class="fa-solid fa-trash"></i></button>
                 </div>
             </div>
             <p class="client-address">${c.address}</p>
             <div class="client-footer">
-                <span>${c.email || 'Pas d\'email'}</span>
+                <span>${c.email || t('clients.noEmail')}</span>
                 <button onclick="invoiceThisClient('${c.id}')" class="btn-primary-pill btn-sm">
-                    Facturer <i class="fa-solid fa-arrow-right"></i>
+                    ${t('clients.invoiceBtn')} <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
         `;
@@ -41,14 +41,14 @@ function openClientModal(clientId = null) {
     document.getElementById('modal-client').classList.remove('hidden');
     if (clientId) {
         const c = state.clients.find(x => x.id === clientId);
-        document.getElementById('modal-client-title').textContent = "Modifier le Client";
+        document.getElementById('modal-client-title').textContent = t('clients.modalEdit');
         document.getElementById('modal-client-id').value = c.id;
         document.getElementById('modal-client-name').value = c.name;
         document.getElementById('modal-client-address').value = c.address;
         document.getElementById('modal-client-siret').value = c.siret || '';
         document.getElementById('modal-client-email').value = c.email || '';
     } else {
-        document.getElementById('modal-client-title').textContent = "Nouveau Client";
+        document.getElementById('modal-client-title').textContent = t('clients.modalNew');
         document.getElementById('modal-client-id').value = '';
         document.getElementById('modal-client-name').value = '';
         document.getElementById('modal-client-address').value = '';
@@ -67,7 +67,7 @@ function saveClientFromModal() {
     const address = document.getElementById('modal-client-address').value.trim();
 
     if (!name || !address) {
-        showToast("Veuillez saisir le nom et l'adresse du client.", "error");
+        showToast(t("toast.clientMissingFields"), "error");
         return;
     }
 
@@ -90,7 +90,7 @@ function saveClientFromModal() {
     closeClientModal();
     renderClientsGrid();
     populateClientDropdown();
-    showToast("Client enregistré avec succès.");
+    showToast(t("toast.clientSaved"));
 }
 
 function editClient(id) {
@@ -98,12 +98,12 @@ function editClient(id) {
 }
 
 function deleteClient(id) {
-    if (confirm("Voulez-vous vraiment supprimer ce client de votre fichier ?")) {
+    if (confirm(t("toast.confirmDeleteClient"))) {
         state.clients = state.clients.filter(c => c.id !== id);
         saveState();
         renderClientsGrid();
         populateClientDropdown();
-        showToast("Client supprimé.");
+        showToast(t("toast.clientDeleted"));
     }
 }
 

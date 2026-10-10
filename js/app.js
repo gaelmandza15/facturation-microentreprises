@@ -11,12 +11,12 @@ function switchTab(tabId) {
 
     // Page Titles update
     const titles = {
-        'facture': ['Générateur de Facture', 'Éditez une facture claire pour votre client.'],
-        'historique': ['Historique des Factures', 'Suivez vos règlements et chiffre d\'affaires.'],
-        'clients': ['Fichier Clients', 'Gérez la liste de vos clients et leurs informations.'],
-        'produits': ['Catalogue de Produits & Services', 'Mémorisez vos tarifs pour un gain de temps.'],
-        'parametres': ['Mon Entreprise & TVA', 'Gérez vos mentions obligatoires et options TVA.'],
-        'instructions': ['Instructions & FAQ', 'Conseils légaux pour la gestion de votre micro-entreprise.']
+        'facture': [t('title.facture'), t('subtitle.facture')],
+        'historique': [t('title.historique'), t('subtitle.historique')],
+        'clients': [t('title.clients'), t('subtitle.clients')],
+        'produits': [t('title.produits'), t('subtitle.produits')],
+        'parametres': [t('title.parametres'), t('subtitle.parametres')],
+        'instructions': [t('title.instructions'), t('subtitle.instructions')]
     };
 
     if (titles[tabId]) {
@@ -35,7 +35,7 @@ function switchTab(tabId) {
 function populateCountrySelect() {
     const sel = document.getElementById('set-country');
     if (!sel) return;
-    const regions = { europe: '🇪🇺 Europe', afrique: '🌍 Afrique francophone', amerique: '🌎 Amériques', asie: '🌏 Asie-Pacifique' };
+    const regions = { europe: t('region.europe'), afrique: t('region.afrique'), amerique: t('region.amerique'), asie: t('region.asie') };
     sel.innerHTML = Object.entries(regions).map(([key, label]) =>
         `<optgroup label="${label}">` +
         COUNTRIES.filter(c => c.region === key).map(c => `<option value="${c.code}">${c.name}</option>`).join('') +
@@ -43,6 +43,8 @@ function populateCountrySelect() {
 }
 
 window.onload = function() {
+    ensureLangSwitch();
+    applyLanguage(); // applique la langue (anglais par défaut) sur tout le DOM
     populateCountrySelect();
     initInvoiceForm();
     updateBadges();

@@ -1,0 +1,10 @@
+{
+  "name": "facturation-microentreprises",
+  "private": true,
+  "scripts": {
+    "check-i18n": "node scripts/check-i18n.js"
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1"
+  }
+}

@@ -1,3 +1,9 @@
+// Traduction des statuts de facture (valeur interne FR stable, libellé affiché traduit)
+function statusLabel(v) {
+    const map = { "Brouillon": "status.draft", "En attente": "status.pending", "Payée": "status.paid" };
+    return t(map[v] || "status.draft");
+}
+
 // Utilitaires transversaux : notifications toast.
 function showToast(message, type = 'success') {
     const container = document.getElementById('toast-container');

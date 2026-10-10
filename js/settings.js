@@ -32,7 +32,7 @@ function saveSettings() {
     saveState();
     applyCountrySettings();
     renderSellerSummary();
-    showToast("Profil entreprise mis à jour.");
+    showToast(t("toast.profileUpdated"));
 }
 
 function toggleTvaRegime() {
@@ -69,7 +69,7 @@ function onCountryChange() {
     saveState();
     applyCountrySettings();
     renderCountryConfigForm();
-    showToast(`Pays : ${country.name} — devise ${country.currency}, mention TVA mise à jour.`);
+    showToast(t("toast.countryChanged", { name: country.name, currency: country.currency }));
 }
 
 function onCurrencyChange() {
@@ -89,14 +89,14 @@ function applyTvaDisplaySettings() {
     const badge = document.getElementById('status-tva-badge');
 
     if (isExempt) {
-        badge.textContent = "Exonéré";
+        badge.textContent = t("footer.exempt");
         badge.style.color = "var(--status-success-text)";
         document.body.classList.add('tva-exempt');
         document.querySelectorAll('.class-tva-col').forEach(el => el.style.display = 'none');
         document.querySelectorAll('.print-tva-col').forEach(el => el.style.display = 'none');
         document.getElementById('tva-legal-notice-display').style.display = 'block';
     } else {
-        badge.textContent = "Assujetti TVA";
+        badge.textContent = t("footer.taxable");
         badge.style.color = "var(--status-warning-text)";
         document.body.classList.remove('tva-exempt');
         document.querySelectorAll('.class-tva-col').forEach(el => el.style.display = '');
@@ -123,7 +123,7 @@ function exportDataJSON() {
     dlAnchorElem.setAttribute("href", dataStr);
     dlAnchorElem.setAttribute("download", `facturamicro_backup_${new Date().toISOString().split('T')[0]}.json`);
     dlAnchorElem.click();
-    showToast("Export de sauvegarde téléchargé.");
+    showToast(t("toast.exportDownloaded"));
 }
 
 function importDataJSON(event) {
@@ -141,23 +141,23 @@ function importDataJSON(event) {
                 saveState();
                 applyCountrySettings();
                 initInvoiceForm();
-                showToast("Sauvegarde importée avec succès !");
+                showToast(t("toast.importOk"));
             } else {
-                showToast("Fichier JSON invalide.", "error");
+                showToast(t("toast.importInvalid"), "error");
             }
         } catch (err) {
-            showToast("Erreur lors de la lecture du fichier JSON.", "error");
+            showToast(t("toast.importError"), "error");
         }
     };
     fileReader.readAsText(event.target.files[0]);
 }
 
 function resetDataModal() {
-    if (confirm("Réinitialiser les données avec les exemples de démonstration ?")) {
+    if (confirm(t("toast.confirmResetDemo"))) {
         state = JSON.parse(JSON.stringify(DEFAULT_STATE));
         saveState();
         initInvoiceForm();
         switchTab('facture');
-        showToast("Données d'exemple réinitialisées !");
+        showToast(t("toast.demoReset"));
     }
 }

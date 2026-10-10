@@ -11,8 +11,8 @@ function renderProductsTable() {
             <td class="text-right cell-mono cell-strong">${fmtMoney(p.price)}</td>
             <td class="text-center cell-mono class-tva-col">${p.tva || 0}%</td>
             <td class="text-right">
-                <button onclick="editProduct('${p.id}')" class="icon-btn" title="Modifier"><i class="fa-solid fa-pen"></i></button>
-                <button onclick="deleteProduct('${p.id}')" class="icon-btn danger" title="Supprimer"><i class="fa-solid fa-trash"></i></button>
+                <button onclick="editProduct('${p.id}')" class="icon-btn" title="${t('clients.editTitle')}"><i class="fa-solid fa-pen"></i></button>
+                <button onclick="deleteProduct('${p.id}')" class="icon-btn danger" title="${t('clients.deleteTitle')}"><i class="fa-solid fa-trash"></i></button>
             </td>
         `;
         tbody.appendChild(tr);
@@ -23,14 +23,14 @@ function openProductModal(prodId = null) {
     document.getElementById('modal-product').classList.remove('hidden');
     if (prodId) {
         const p = state.products.find(x => x.id === prodId);
-        document.getElementById('modal-product-title').textContent = "Modifier le Produit";
+        document.getElementById('modal-product-title').textContent = t('products.modalEdit');
         document.getElementById('modal-product-id').value = p.id;
         document.getElementById('modal-product-name').value = p.name;
         document.getElementById('modal-product-desc').value = p.desc || '';
         document.getElementById('modal-product-price').value = p.price;
         document.getElementById('modal-product-tva').value = p.tva || 0;
     } else {
-        document.getElementById('modal-product-title').textContent = "Nouveau Produit";
+        document.getElementById('modal-product-title').textContent = t('products.modalNew');
         document.getElementById('modal-product-id').value = '';
         document.getElementById('modal-product-name').value = '';
         document.getElementById('modal-product-desc').value = '';
@@ -49,7 +49,7 @@ function saveProductFromModal() {
     const price = parseFloat(document.getElementById('modal-product-price').value);
 
     if (!name || isNaN(price)) {
-        showToast("Veuillez remplir le nom et le prix du produit.", "error");
+        showToast(t("toast.productMissingFields"), "error");
         return;
     }
 
@@ -72,7 +72,7 @@ function saveProductFromModal() {
     closeProductModal();
     renderProductsTable();
     populateProductDropdown();
-    showToast("Produit/Prestation enregistré.");
+    showToast(t("toast.productSaved"));
 }
 
 function editProduct(id) {
@@ -80,11 +80,11 @@ function editProduct(id) {
 }
 
 function deleteProduct(id) {
-    if (confirm("Voulez-vous supprimer ce produit du catalogue ?")) {
+    if (confirm(t("toast.confirmDeleteProduct"))) {
         state.products = state.products.filter(p => p.id !== id);
         saveState();
         renderProductsTable();
         populateProductDropdown();
-        showToast("Produit supprimé.");
+        showToast(t("toast.productDeleted"));
     }
 }

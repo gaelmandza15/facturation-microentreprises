@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FacturaMicro - Outil de Facturation Micro-Entreprise</title>
+    <title data-i18n-doc-title="app.title">FacturaMicro - Outil de Facturation Micro-Entreprise</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -21,36 +21,36 @@
                 <span class="logo-badge"><i class="fa-solid fa-file-invoice"></i></span>
                 <div>
                     FacturaMicro
-                    <span class="brand-subtitle">Micro-Entreprise</span>
+                    <span class="brand-subtitle" data-i18n="brand.subtitle">Micro-Entreprise</span>
                 </div>
             </div>
 
             <nav class="nav-list">
                 <button onclick="switchTab('facture')" id="nav-facture" class="nav-btn active">
                     <i class="fa-solid fa-plus-circle" style="width:20px;text-align:center;"></i>
-                    <span>Créer une Facture</span>
+                    <span data-i18n="nav.facture">Créer une Facture</span>
                 </button>
                 <button onclick="switchTab('historique')" id="nav-historique" class="nav-btn">
                     <i class="fa-solid fa-clock-rotate-left" style="width:20px;text-align:center;"></i>
-                    <span>Historique Factures</span>
-                    <span id="badge-invoice-count" class="nav-badge" title="Nombre total de factures enregistrées dans l'historique">0</span>
+                    <span data-i18n="nav.historique">Historique Factures</span>
+                    <span id="badge-invoice-count" class="nav-badge" data-i18n-title="badge.invoice.tooltip" title="Nombre total de factures enregistrées dans l'historique">0</span>
                 </button>
                 <button onclick="switchTab('clients')" id="nav-clients" class="nav-btn">
                     <i class="fa-solid fa-users" style="width:20px;text-align:center;"></i>
-                    <span>Fichier Clients</span>
-                    <span id="badge-client-count" class="nav-badge" title="Nombre total de clients enregistrés">0</span>
+                    <span data-i18n="nav.clients">Fichier Clients</span>
+                    <span id="badge-client-count" class="nav-badge" data-i18n-title="badge.client.tooltip" title="Nombre total de clients enregistrés">0</span>
                 </button>
                 <button onclick="switchTab('produits')" id="nav-produits" class="nav-btn">
                     <i class="fa-solid fa-boxes-packing" style="width:20px;text-align:center;"></i>
-                    <span>Liste de Produits</span>
+                    <span data-i18n="nav.produits">Liste de Produits</span>
                 </button>
                 <button onclick="switchTab('parametres')" id="nav-parametres" class="nav-btn">
                     <i class="fa-solid fa-sliders" style="width:20px;text-align:center;"></i>
-                    <span>Mon Entreprise & TVA</span>
+                    <span data-i18n="nav.parametres">Mon Entreprise & TVA</span>
                 </button>
                 <button onclick="switchTab('instructions')" id="nav-instructions" class="nav-btn">
                     <i class="fa-solid fa-circle-question" style="width:20px;text-align:center;"></i>
-                    <span>Instructions & Tuto</span>
+                    <span data-i18n="nav.instructions">Instructions & Tuto</span>
                 </button>
             </nav>
         </div>
@@ -58,12 +58,12 @@
         <!-- Sidebar Footer Status -->
         <div class="sidebar-footer">
             <div class="footer-row">
-                <span>Régime TVA :</span>
+                <span data-i18n="footer.tvaRegime">Régime TVA :</span>
                 <span id="status-tva-badge" style="font-weight:700;color:#15803d;">Non Assujetti</span>
             </div>
             <div class="footer-row">
-                <span>Sauvegarde auto :</span>
-                <span style="font-weight:700;color:var(--primary-blue);"><i class="fa-solid fa-check"></i> Locale</span>
+                <span data-i18n="footer.autosave">Sauvegarde auto :</span>
+                <span style="font-weight:700;color:var(--primary-blue);"><i class="fa-solid fa-check"></i> <span data-i18n="footer.local">Locale</span></span>
             </div>
         </div>
     </aside>
@@ -74,15 +74,15 @@
         <!-- Top Header Bar -->
         <header class="top-header">
             <div class="header-title">
-                <h1 id="page-title">Générateur de Facture</h1>
-                <p id="page-subtitle">Créez et éditez une facture conforme en quelques secondes.</p>
+                <h1 id="page-title" data-i18n="title.facture">Générateur de Facture</h1>
+                <p id="page-subtitle" data-i18n="subtitle.facture">Créez et éditez une facture conforme en quelques secondes.</p>
             </div>
             <div class="header-actions">
                 <button onclick="resetDataModal()" class="btn-secondary-pill btn-sm">
-                    <i class="fa-solid fa-rotate-right"></i> Données d'exemple
+                    <i class="fa-solid fa-rotate-right"></i> <span data-i18n="header.resetDemo">Données d'exemple</span>
                 </button>
                 <button onclick="switchTab('facture')" class="btn-primary-pill btn-sm">
-                    <i class="fa-solid fa-plus"></i> Nouvelle Facture
+                    <i class="fa-solid fa-plus"></i> <span data-i18n="header.newInvoice">Nouvelle Facture</span>
                 </button>
             </div>
         </header>
@@ -94,22 +94,22 @@
         <section id="tab-facture" class="tab-content active">
 
             <div class="form-card">
-                <div class="form-card-title"><i class="fa-solid fa-file-circle-plus" style="color:var(--primary-blue);"></i> Nouvelle facture</div>
-                <p class="form-card-subtitle">Renseignez les informations obligatoires, ajoutez vos prestations puis enregistrez.</p>
+                <div class="form-card-title"><i class="fa-solid fa-file-circle-plus" style="color:var(--primary-blue);"></i> <span data-i18n="invoice.cardTitle">Nouvelle facture</span></div>
+                <p class="form-card-subtitle" data-i18n="invoice.cardSubtitle">Renseignez les informations obligatoires, ajoutez vos prestations puis enregistrez.</p>
 
                 <!-- Invoice Header & Numbers -->
                 <div class="section-grid cols-3" style="margin-bottom:28px;">
                     <div class="form-group">
-                        <label class="form-label" for="inv-number">Numéro de Facture</label>
+                        <label data-i18n="invoice.number" class="form-label" for="inv-number">Numéro de Facture</label>
                         <input type="text" id="inv-number" class="input-pill" style="font-weight:700;">
-                        <span class="input-hint">Format séquentiel recommandé (ex: FACT-2026-001)</span>
+                        <span class="input-hint" data-i18n="invoice.numberHint">Format séquentiel recommandé (ex: FACT-2026-001)</span>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="inv-date">Date d'Émission</label>
+                        <label data-i18n="invoice.date" class="form-label" for="inv-date">Date d'Émission</label>
                         <input type="date" id="inv-date" class="input-pill">
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="inv-duedate">Date d'Échéance / Règlement</label>
+                        <label data-i18n="invoice.dueDate" class="form-label" for="inv-duedate">Date d'Échéance / Règlement</label>
                         <input type="date" id="inv-duedate" class="input-pill">
                     </div>
                 </div>
@@ -119,8 +119,8 @@
                     <!-- Seller Info Preview -->
                     <div class="info-panel">
                         <div class="panel-label">
-                            <span>Émetteur (Votre entreprise)</span>
-                            <button onclick="switchTab('parametres')"><i class="fa-solid fa-pen"></i> Modifier</button>
+                            <span data-i18n="invoice.emitter">Émetteur (Votre entreprise)</span>
+                            <button onclick="switchTab('parametres')"><i class="fa-solid fa-pen"></i> <span data-i18n="invoice.edit">Modifier</span></button>
                         </div>
                         <div id="seller-summary" style="font-size:0.85rem;color:var(--text-muted);line-height:1.7;">
                             <!-- Populated dynamically -->
@@ -130,18 +130,18 @@
                     <!-- Client Selection & Info -->
                     <div class="info-panel">
                         <div class="panel-label">
-                            <span>Client Destinataire</span>
-                            <button onclick="openClientModal()">+ Créer un client</button>
+                            <span data-i18n="invoice.client">Client Destinataire</span>
+                            <button onclick="openClientModal()" data-i18n="invoice.createClient">+ Créer un client</button>
                         </div>
                         <select id="inv-client-select" onchange="loadSelectedClientIntoInvoice()" class="input-pill" style="font-weight:600;">
-                            <option value="">-- Sélectionner un client enregistré --</option>
+                            <option value="" data-i18n="invoice.selectClient">-- Sélectionner un client enregistré --</option>
                         </select>
                         <div id="client-detail-fields" style="display:flex;flex-direction:column;gap:8px;">
-                            <input type="text" id="inv-client-name" placeholder="Nom ou Raison Sociale du client *" class="input-pill">
-                            <textarea id="inv-client-address" rows="2" placeholder="Adresse postale complète du client" class="input-pill"></textarea>
+                            <input type="text" id="inv-client-name" data-i18n-ph="invoice.clientNamePh" placeholder="..." class="input-pill">
+                            <textarea id="inv-client-address" rows="2" data-i18n-ph="invoice.clientAddressPh" placeholder="..." class="input-pill"></textarea>
                             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-                                <input type="text" id="inv-client-siret" data-input="taxid" placeholder="SIRET / Num TVA" class="input-pill">
-                                <input type="email" id="inv-client-email" placeholder="Email de contact" class="input-pill">
+                                <input type="text" id="inv-client-siret" data-input="taxid" data-i18n-ph="invoice.clientTaxIdPh" class="input-pill" placeholder="SIRET / Num TVA">
+                                <input type="email" id="inv-client-email" data-i18n-ph="invoice.clientEmailPh" placeholder="..." class="input-pill">
                             </div>
                         </div>
                     </div>
@@ -150,9 +150,9 @@
                 <!-- Line Items Table -->
                 <div style="margin-bottom:28px;">
                     <div class="table-toolbar">
-                        <div class="form-card-title" style="margin-bottom:0;"><i class="fa-solid fa-list" style="color:var(--primary-blue);"></i> Prestations / Produits</div>
+                        <div class="form-card-title" style="margin-bottom:0;"><i class="fa-solid fa-list" style="color:var(--primary-blue);"></i> <span data-i18n="invoice.itemsTitle">Prestations / Produits</span></div>
                         <select id="quick-product-select" onchange="addPredefinedProductToInvoice()" class="input-pill" style="min-width:280px;">
-                            <option value="">+ Ajouter depuis la liste de produits...</option>
+                            <option value="" data-i18n="invoice.addFromCatalog">+ Ajouter depuis la liste de produits...</option>
                         </select>
                     </div>
 
@@ -160,11 +160,11 @@
                         <table class="custom-table invoice-items-table" style="min-width:640px;">
                             <thead>
                                 <tr>
-                                    <th style="width:40%;">Description de la prestation / produit</th>
-                                    <th class="text-center" style="width:80px;">Qté</th>
-                                    <th class="text-right" style="width:120px;">Prix Unit. HT <span data-cur-label>(€)</span></th>
-                                    <th class="text-center class-tva-col" style="width:90px;">TVA %</th>
-                                    <th class="text-right" style="width:110px;">Total HT <span data-cur-label>(€)</span></th>
+                                    <th style="width:40%;" data-i18n="invoice.colDescription">Description de la prestation / produit</th>
+                                    <th class="text-center" style="width:80px;" data-i18n="invoice.colQty">Qté</th>
+                                    <th class="text-right" style="width:120px;"><span data-i18n="invoice.colUnitPrice">Prix Unit. HT</span> <span data-cur-label>(€)</span></th>
+                                    <th class="text-center class-tva-col" style="width:90px;" data-i18n="invoice.colTva">TVA %</th>
+                                    <th class="text-right" style="width:110px;"><span data-i18n="invoice.colTotalHt">Total HT</span> <span data-cur-label>(€)</span></th>
                                     <th class="text-center" style="width:60px;"></th>
                                 </tr>
                             </thead>
@@ -176,11 +176,11 @@
 
                     <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-top:8px;">
                         <div style="display:flex;align-items:center;gap:10px;">
-                            <label for="default-tva-rate" class="form-label" style="margin:0;white-space:nowrap;font-size:0.8rem;color:var(--text-muted);">Taux TVA par défaut des nouvelles lignes :</label>
+                            <label for="default-tva-rate" class="form-label" data-i18n="invoice.defaultRateLabel" style="margin:0;white-space:nowrap;font-size:0.8rem;color:var(--text-muted);">Taux TVA par défaut des nouvelles lignes :</label>
                             <select id="default-tva-rate" class="input-pill" style="width:auto;padding:6px 12px;"></select>
                         </div>
                         <button onclick="addInvoiceItemRow()" class="btn-secondary-pill btn-sm">
-                            <i class="fa-solid fa-plus"></i> Ajouter une ligne personnalisée
+                            <i class="fa-solid fa-plus"></i> <span data-i18n="invoice.addLine">Ajouter une ligne personnalisée</span>
                         </button>
                     </div>
                 </div>
@@ -190,11 +190,11 @@
                     <!-- Left: Notes & Conditions -->
                     <div>
                         <div class="form-group">
-                            <label class="form-label" for="inv-terms">Conditions de règlement & Pénalités</label>
+                            <label class="form-label" data-i18n="invoice.terms" for="inv-terms">Conditions de règlement & Pénalités</label>
                             <textarea id="inv-terms" rows="3" class="input-pill"></textarea>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="inv-iban">Coordonnées bancaires (RIB / IBAN)</label>
+                            <label class="form-label" data-i18n="invoice.bankDetails" for="inv-iban">Coordonnées bancaires (RIB / IBAN)</label>
                             <input type="text" id="inv-iban" class="input-pill" style="font-variant-numeric:tabular-nums;">
                         </div>
                     </div>
@@ -202,23 +202,23 @@
                     <!-- Right: Calculation Breakdown -->
                     <div class="totals-panel">
                         <div class="totals-row">
-                            <span>Sous-Total HT :</span>
+                            <span data-i18n="invoice.subtotal">Sous-Total HT :</span>
                             <span id="calc-subtotal-ht" class="value">—</span>
                         </div>
                         <div class="totals-row">
-                            <span>Remise globale (%) :</span>
+                            <span data-i18n="invoice.discountGlobal">Remise globale (%) :</span>
                             <input type="number" id="inv-discount" value="0" min="0" max="100" oninput="calculateInvoiceTotals()" class="discount-input">
                         </div>
                         <div class="totals-row discount">
-                            <span>Montant Remise :</span>
+                            <span data-i18n="invoice.discountAmount">Montant Remise :</span>
                             <span id="calc-discount-val" class="value">—</span>
                         </div>
                         <div class="totals-row class-tva-col" id="tva-breakdown-row">
-                            <span>Montant TVA :</span>
+                            <span data-i18n="invoice.tvaAmount">Montant TVA :</span>
                             <span id="calc-tva-total" class="value">—</span>
                         </div>
                         <div class="totals-row net">
-                            <span>NET À PAYER :</span>
+                            <span data-i18n="invoice.netToPay">NET À PAYER :</span>
                             <span id="calc-total-net" class="value">—</span>
                         </div>
                         <div id="tva-legal-notice-display" class="legal-notice">
@@ -230,23 +230,23 @@
                 <!-- Action Buttons -->
                 <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-top:32px;border-top:1px solid var(--border-color);padding-top:24px;">
                     <div class="form-group" style="margin-bottom:0;flex-direction:row;align-items:center;gap:12px;">
-                        <label class="form-label" for="inv-status" style="margin:0;padding:0;">Statut :</label>
+                        <label class="form-label" for="inv-status" style="margin:0;padding:0;" data-i18n="invoice.status">Statut :</label>
                         <select id="inv-status" class="input-pill" style="width:auto;padding:8px 32px 8px 18px;font-weight:700;">
-                            <option value="Brouillon">Brouillon</option>
-                            <option value="En attente">En attente de paiement</option>
-                            <option value="Payée">Payée</option>
+                            <option value="Brouillon" data-i18n="status.draft">Brouillon</option>
+                            <option value="En attente" data-i18n="status.pending">En attente de paiement</option>
+                            <option value="Payée" data-i18n="status.paid">Payée</option>
                         </select>
                     </div>
 
                     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-                        <button onclick="clearInvoiceForm()" class="btn-secondary-pill">
+                        <button onclick="clearInvoiceForm()" class="btn-secondary-pill" data-i18n="invoice.reset">
                             Réinitialiser
                         </button>
                         <button onclick="previewAndPrintInvoice()" class="btn-dark-pill">
-                            <i class="fa-solid fa-print"></i> Aperçu & Imprimer / PDF
+                            <i class="fa-solid fa-print"></i> <span data-i18n="invoice.print">Aperçu & Imprimer / PDF</span>
                         </button>
                         <button onclick="saveCurrentInvoice()" class="btn-primary-pill">
-                            <i class="fa-solid fa-floppy-disk"></i> Enregistrer la Facture
+                            <i class="fa-solid fa-floppy-disk"></i> <span data-i18n="invoice.save">Enregistrer la Facture</span>
                         </button>
                     </div>
                 </div>
@@ -260,21 +260,21 @@
             <!-- History Top Stats -->
             <div class="stats-grid">
                 <div class="accent-blue-card">
-                    <span class="card-title"><i class="fa-solid fa-sack-dollar"></i> Chiffre d'Affaires Total (Payé)</span>
+                    <span class="card-title"><i class="fa-solid fa-sack-dollar"></i> <span data-i18n="history.statCaTitle">Chiffre d'Affaires Total (Payé)</span>
                     <span class="amount-pill" id="stat-total-ca">—</span>
-                    <span class="card-hint">Total des factures réglées par vos clients.</span>
+                    <span class="card-hint" data-i18n="history.statCaHint">Total des factures réglées par vos clients.</span>
                 </div>
                 <div class="stat-card">
                     <div class="stat-card-header">
                         <span class="stat-icon-badge"><i class="fa-solid fa-hourglass-half"></i></span>
-                        En attente de règlement
+                        <span data-i18n="history.statPendingTitle">En attente de règlement</span>
                     </div>
                     <div class="stat-value" id="stat-pending-ca">—</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-card-header">
                         <span class="stat-icon-badge"><i class="fa-solid fa-file-invoice"></i></span>
-                        Nombre total de factures
+                        <span data-i18n="history.statCountTitle">Nombre total de factures</span>
                     </div>
                     <div class="stat-value" id="stat-total-invoices">0</div>
                 </div>
@@ -287,15 +287,15 @@
                 <div class="table-toolbar">
                     <div class="search-wrapper">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="history-search" oninput="renderHistoryTable()" placeholder="Rechercher (N°, Client...)" class="input-pill">
+                        <input type="text" id="history-search" oninput="renderHistoryTable()" data-i18n-ph="history.searchPh" placeholder="..." class="input-pill">
                     </div>
                     <div style="display:flex;align-items:center;gap:10px;">
-                        <label class="form-label" style="margin:0;padding:0;">Filtrer par statut :</label>
+                        <label class="form-label" data-i18n="history.filterLabel" style="margin:0;padding:0;">Filtrer par statut :</label>
                         <select id="history-filter-status" onchange="renderHistoryTable()" class="input-pill" style="width:auto;">
-                            <option value="ALL">Tous les statuts</option>
-                            <option value="Payée">Payée</option>
-                            <option value="En attente">En attente</option>
-                            <option value="Brouillon">Brouillon</option>
+                            <option value="ALL" data-i18n="history.filterAll">Tous les statuts</option>
+                            <option value="Payée" data-i18n="status.paid">Payée</option>
+                            <option value="En attente" data-i18n="history.statusOption.pending">En attente</option>
+                            <option value="Brouillon" data-i18n="status.draft">Brouillon</option>
                         </select>
                     </div>
                 </div>
@@ -305,12 +305,12 @@
                     <table class="custom-table">
                         <thead>
                             <tr>
-                                <th>N° Facture</th>
-                                <th>Date</th>
-                                <th>Client</th>
-                                <th class="text-right">Montant NET</th>
-                                <th class="text-center">Statut</th>
-                                <th class="text-right">Actions</th>
+                                <th data-i18n="history.colNumber">N° Facture</th>
+                                <th data-i18n="history.colDate">Date</th>
+                                <th data-i18n="history.colClient">Client</th>
+                                <th class="text-right" data-i18n="history.colAmount">Montant NET</th>
+                                <th class="text-center" data-i18n="history.colStatus">Statut</th>
+                                <th class="text-right" data-i18n="history.colActions">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="history-table-body">
@@ -321,7 +321,7 @@
 
                 <div id="history-empty-state" class="empty-state" style="background:transparent;padding:32px 0;">
                     <i class="fa-solid fa-folder-open"></i>
-                    <p>Aucune facture enregistrée dans l'historique pour le moment.</p>
+                    <p data-i18n="history.empty">Aucune facture enregistrée dans l'historique pour le moment.</p>
                 </div>
             </div>
 
@@ -332,11 +332,11 @@
 
             <div class="table-toolbar">
                 <div>
-                    <div class="form-card-title">Base de données Clients</div>
-                    <p class="form-card-subtitle" style="margin-bottom:0;">Gérez la liste de vos clients et leurs informations.</p>
+                    <div class="form-card-title" data-i18n="clients.dbTitle">Base de données Clients</div>
+                    <p class="form-card-subtitle" data-i18n="clients.dbSubtitle" style="margin-bottom:0;">Gérez la liste de vos clients et leurs informations.</p>
                 </div>
                 <button onclick="openClientModal()" class="btn-primary-pill">
-                    <i class="fa-solid fa-plus"></i> Nouveau Client
+                    <i class="fa-solid fa-plus"></i> <span data-i18n="clients.new">Nouveau Client</span>
                 </button>
             </div>
 
@@ -346,7 +346,7 @@
 
             <div id="clients-empty-state" class="empty-state">
                 <i class="fa-solid fa-users"></i>
-                <p>Aucun client enregistré. Ajoutez votre premier client pour accélérer la rédaction de factures.</p>
+                <p data-i18n="clients.empty">Aucun client enregistré. Ajoutez votre premier client pour accélérer la rédaction de factures.</p>
             </div>
 
         </section>
@@ -357,11 +357,11 @@
             <div class="table-container">
                 <div class="table-toolbar">
                     <div>
-                        <div class="form-card-title">Catalogue de Prestations & Produits</div>
-                        <p class="form-card-subtitle" style="margin-bottom:0;">Préréglez vos offres récurrentes pour les insérer en 1 clic dans vos factures.</p>
+                        <div class="form-card-title" data-i18n="products.catalogTitle">Catalogue de Prestations & Produits</div>
+                        <p class="form-card-subtitle" data-i18n="products.catalogSubtitle" style="margin-bottom:0;">Préréglez vos offres récurrentes pour les insérer en 1 clic dans vos factures.</p>
                     </div>
                     <button onclick="openProductModal()" class="btn-primary-pill">
-                        <i class="fa-solid fa-plus"></i> Nouveau Produit/Service
+                        <i class="fa-solid fa-plus"></i> <span data-i18n="products.new">Nouveau Produit/Service</span>
                     </button>
                 </div>
 
@@ -369,11 +369,11 @@
                     <table class="custom-table">
                         <thead>
                             <tr>
-                                <th>Référence / Nom</th>
-                                <th>Description</th>
-                                <th class="text-right">Prix Unitaire HT <span data-cur-label>(€)</span></th>
+                                <th data-i18n="products.colRef">Référence / Nom</th>
+                                <th data-i18n="products.colDesc">Description</th>
+                                <th class="text-right"><span data-i18n="products.colPrice">Prix Unitaire HT</span> <span data-cur-label>(€)</span></th>
                                 <th class="text-center class-tva-col">TVA %</th>
-                                <th class="text-right">Actions</th>
+                                <th class="text-right" data-i18n="history.colActions">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="products-table-body">
@@ -389,12 +389,12 @@
         <section id="tab-parametres" class="tab-content">
 
             <div class="form-card">
-                <div class="form-card-title"><i class="fa-solid fa-building" style="color:var(--primary-blue);"></i> Profil de la Micro-Entreprise</div>
-                <p class="form-card-subtitle">Ces informations obligatoires figureront sur l'en-tête de vos factures.</p>
+                <div class="form-card-title"><i class="fa-solid fa-building" style="color:var(--primary-blue);"></i> <span data-i18n="settings.profileTitle">Profil de la Micro-Entreprise</span></div>
+                <p class="form-card-subtitle" data-i18n="settings.profileSubtitle">Ces informations obligatoires figureront sur l'en-tête de vos factures.</p>
 
                 <div class="section-grid cols-2">
                     <div class="form-group">
-                        <label class="form-label" for="set-company-name">Nom Commercial / Prénom Nom *</label>
+                        <label data-i18n="settings.companyName" class="form-label" for="set-company-name">Nom Commercial / Prénom Nom *</label>
                         <input type="text" id="set-company-name" class="input-pill">
                     </div>
                     <div class="form-group">
@@ -402,109 +402,109 @@
                         <input type="text" id="set-company-siret" data-input="taxid" placeholder="123 456 789 00012" class="input-pill">
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="set-company-ape"><span data-i18n-altid>Code NAF / APE</span> <span class="optional">(Optionnel)</span></label>
+                        <label class="form-label" for="set-company-ape"><span data-i18n-altid>Code NAF / APE</span> <span class="optional" data-i18n="settings.optional">(Optionnel)</span></label>
                         <input type="text" id="set-company-ape" placeholder="ex: 6201Z" class="input-pill">
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="set-company-contact">Téléphone & Email</label>
+                        <label data-i18n="settings.contact" class="form-label" for="set-company-contact">Téléphone & Email</label>
                         <input type="text" id="set-company-contact" placeholder="06 00 00 00 00 - contact@monentreprise.fr" class="input-pill">
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="set-company-address">Adresse complète du siège social *</label>
+                        <label data-i18n="settings.address" class="form-label" for="set-company-address">Adresse complète du siège social *</label>
                         <input type="text" id="set-company-address" placeholder="10 rue de la République, 75001 Paris" class="input-pill">
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="set-company-iban">RIB / IBAN par défaut</label>
+                        <label data-i18n="settings.ibanDefault" class="form-label" for="set-company-iban">RIB / IBAN par défaut</label>
                         <input type="text" id="set-company-iban" placeholder="FR76 0000 0000 0000 0000 0000 000" class="input-pill" style="font-variant-numeric:tabular-nums;">
                     </div>
                 </div>
 
                 <!-- Localisation : pays, devise, format numérique -->
                 <div style="border-top:1px solid var(--border-color);padding-top:24px;margin-top:8px;">
-                    <div class="form-card-title" style="margin-bottom:4px;"><i class="fa-solid fa-globe" style="color:var(--primary-blue);"></i> Localisation & Devise</div>
-                    <p class="form-card-subtitle">Adapte automatiquement les mentions légales TVA, l'identifiant fiscal, la devise et le format des montants sur vos factures.</p>
+                    <div class="form-card-title" style="margin-bottom:4px;"><i class="fa-solid fa-globe" style="color:var(--primary-blue);"></i> <span data-i18n="settings.locTitle">Localisation & Devise</span></div>
+                    <p class="form-card-subtitle" data-i18n="settings.locSubtitle">Adapte automatiquement les mentions légales TVA, l'identifiant fiscal, la devise et le format des montants sur vos factures.</p>
                     <div class="section-grid cols-3">
                         <div class="form-group">
-                            <label class="form-label" for="set-country">Pays d'imposition *</label>
+                            <label data-i18n="settings.country" class="form-label" for="set-country">Pays d'imposition *</label>
                             <select id="set-country" onchange="onCountryChange()" class="input-pill" style="font-weight:600;"></select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="set-currency">Devise d'affichage</label>
+                            <label data-i18n="settings.currency" class="form-label" for="set-currency">Devise d'affichage</label>
                             <select id="set-currency" onchange="onCurrencyChange()" class="input-pill"></select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="set-locale">Format des nombres</label>
+                            <label data-i18n="settings.numberFormat" class="form-label" for="set-locale">Format des nombres</label>
                             <select id="set-locale" onchange="onLocaleChange()" class="input-pill">
-                                <option value="fr">1 234,56 (français)</option>
-                                <option value="en">1,234.56 (anglais/US)</option>
-                                <option value="es">1.234,56 (espagnol)</option>
-                                <option value="de">1.234,56 (allemand)</option>
-                                <option value="pt">1.234,56 (portugais)</option>
-                                <option value="ja">1,234.56 (japonais/chinois)</option>
+                                <option value="fr" data-i18n="locale.fr">1 234,56 (français)</option>
+                                <option value="en" data-i18n="locale.en">1,234.56 (anglais/US)</option>
+                                <option value="es" data-i18n="locale.es">1.234,56 (espagnol)</option>
+                                <option value="de" data-i18n="locale.de">1.234,56 (allemand)</option>
+                                <option value="pt" data-i18n="locale.pt">1.234,56 (portugais)</option>
+                                <option value="ja" data-i18n="locale.ja">1,234.56 (japonais/chinois)</option>
                             </select>
                         </div>
                     </div>
                     <div id="eu-intra-note" class="legal-notice" style="display:none;">
-                        <i class="fa-solid fa-info-circle"></i> Pays UE : pour une prestation transfrontalière à un client professionnel, vérifiez l'autoliquidation (reverse charge) et mentionnez votre numéro de TVA intracommunautaire. Les seuils et taux affichés sont indicatifs — confirmez avec votre administration fiscale locale.
+                        <i class="fa-solid fa-info-circle"></i> <span data-i18n="settings.euNote">Pays UE : pour une prestation transfrontalière à un client professionnel, vérifiez l'autoliquidation (reverse charge) et mentionnez votre numéro de TVA intracommunautaire. Les seuils et taux affichés sont indicatifs — confirmez avec votre administration fiscale locale.</span>
                     </div>
 
                     <!-- Configuration pays personnalisée : les réglementations changent, tout est modifiable -->
                     <div style="border:1px solid var(--border-color);border-radius:var(--radius-card-sm);padding:20px;margin-top:16px;background:rgba(148,163,184,0.05);">
                         <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px;">
-                            <div class="form-card-title" style="margin-bottom:0;"><i class="fa-solid fa-sliders" style="color:var(--primary-blue);"></i> Configuration personnalisée du pays</div>
+                            <div class="form-card-title" style="margin-bottom:0;"><i class="fa-solid fa-sliders" style="color:var(--primary-blue);"></i> <span data-i18n="settings.countryConfigTitle">Configuration personnalisée du pays</span></div>
                             <span id="oc-custom-badge" style="display:none;align-items:center;gap:6px;font-size:0.72rem;font-weight:700;color:var(--status-warning-text);background:rgba(245,158,11,0.12);padding:4px 10px;border-radius:999px;">
-                                <i class="fa-solid fa-pen"></i> Personnalisée
+                                <i class="fa-solid fa-pen"></i> <span data-i18n="settings.countryConfigBadge">Personnalisée</span>
                             </span>
                         </div>
-                        <p class="form-card-subtitle">
+                        <p class="form-card-subtitle" data-i18n-html="settings.countryConfigIntro">
                             Les taux de TVA et mentions légales intégrés sont <strong>indicatifs</strong> : les réglementations évoluent en permanence.
                             Modifiez librement ces valeurs si nécessaire — elles s'appliqueront immédiatement au pays sélectionné (taux proposés dans les lignes de facture, mention d'exonération imprimée, identifiant fiscal...).
                         </p>
                         <div class="section-grid cols-2">
                             <div class="form-group">
-                                <label class="form-label" for="oc-vat-rates">Taux applicables (%) — séparés par des virgules</label>
+                                <label data-i18n="settings.vatRates" class="form-label" for="oc-vat-rates">Taux applicables (%) — séparés par des virgules</label>
                                 <input type="text" id="oc-vat-rates" class="input-pill" placeholder="0, 5.5, 10, 20">
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="oc-taxid-label">Libellé de l'identifiant fiscal</label>
+                                <label data-i18n="settings.taxIdLabel" class="form-label" for="oc-taxid-label">Libellé de l'identifiant fiscal</label>
                                 <input type="text" id="oc-taxid-label" class="input-pill" placeholder="ex: SIRET, NINEA, EIN...">
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="oc-taxid-placeholder">Format / exemple de cet identifiant</label>
+                                <label data-i18n="settings.taxIdExample" class="form-label" for="oc-taxid-placeholder">Format / exemple de cet identifiant</label>
                                 <input type="text" id="oc-taxid-placeholder" class="input-pill" placeholder="ex: 123 456 789 00012">
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="oc-altid-label">Identifiant secondaire (vide = masqué)</label>
+                                <label data-i18n="settings.altIdLabel" class="form-label" for="oc-altid-label">Identifiant secondaire (vide = masqué)</label>
                                 <input type="text" id="oc-altid-label" class="input-pill" placeholder="ex: Code APE, RCCM...">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="oc-exempt-note">Mention légale d'exonération (imprimée sur la facture)</label>
+                            <label data-i18n="settings.exemptNoteLabel" class="form-label" for="oc-exempt-note">Mention légale d'exonération (imprimée sur la facture)</label>
                             <textarea id="oc-exempt-note" class="input-pill" rows="2" placeholder="Franchise en base de TVA - TVA non applicable, art. 293 B du CGI."></textarea>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="oc-late-note">Mention pénalités de retard (imprimée sur la facture)</label>
+                            <label data-i18n="settings.lateNoteLabel" class="form-label" for="oc-late-note">Mention pénalités de retard (imprimée sur la facture)</label>
                             <textarea id="oc-late-note" class="input-pill" rows="2" placeholder="En cas de retard de paiement..."></textarea>
                         </div>
                         <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;">
-                            <button onclick="saveCountryOverrides()" class="btn-primary-pill"><i class="fa-solid fa-check"></i> Enregistrer la configuration pays</button>
-                            <button onclick="resetCountryConfig()" class="btn-secondary-pill"><i class="fa-solid fa-rotate-left"></i> Rétablir les valeurs par défaut</button>
+                            <button onclick="saveCountryOverrides()" class="btn-primary-pill"><i class="fa-solid fa-check"></i> <span data-i18n="settings.saveCountryConfig">Enregistrer la configuration pays</span></button>
+                            <button onclick="resetCountryConfig()" class="btn-secondary-pill"><i class="fa-solid fa-rotate-left"></i> <span data-i18n="settings.restoreDefaults">Rétablir les valeurs par défaut</span></button>
                         </div>
                     </div>
                 </div>
 
                 <!-- TVA Regime Settings -->
                 <div style="border-top:1px solid var(--border-color);padding-top:24px;margin-top:24px;">
-                    <div class="form-card-title" style="margin-bottom:16px;">Régime de TVA</div>
+                    <div class="form-card-title" data-i18n="settings.tvaRegime" style="margin-bottom:16px;">Régime de TVA</div>
 
                     <label style="display:flex;align-items:flex-start;gap:14px;padding:18px 20px;background:var(--primary-blue-light);border-radius:var(--radius-card-sm);cursor:pointer;">
                         <input type="checkbox" id="set-tva-exempt" onchange="toggleTvaRegime()" style="margin-top:3px;width:16px;height:16px;accent-color:var(--primary-blue);cursor:pointer;">
                         <div>
                             <span style="font-size:0.9rem;font-weight:700;color:var(--text-main);">
-                                Exonéré de TVA / TVH / GST / TPS (franchise en base du pays sélectionné)
+                                <span data-i18n="settings.tvaExemptTitle">Exonéré de TVA / TVH / GST / TPS (franchise en base du pays sélectionné)</span>
                             </span>
                             <p style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;">
-                                Cochez cette case si vous bénéficiez du statut de micro-entrepreneur non assujetti à la TVA. Les colonnes TVA seront masquées et la mention obligatoire sera ajoutée automatiquement.
+                                <span data-i18n="settings.tvaExemptHelp">Cochez cette case si vous bénéficiez du statut de micro-entrepreneur non assujetti à la TVA. Les colonnes TVA seront masquées et la mention obligatoire sera ajoutée automatiquement.</span>
                             </p>
                         </div>
                     </label>
@@ -512,16 +512,16 @@
 
                 <!-- Data Backup / Export / Import -->
                 <div style="border-top:1px solid var(--border-color);padding-top:24px;margin-top:24px;">
-                    <div class="form-card-title" style="margin-bottom:8px;">Sécurité & Sauvegarde des données</div>
+                    <div class="form-card-title" data-i18n="settings.backupTitle" style="margin-bottom:8px;">Sécurité & Sauvegarde des données</div>
                     <p class="form-card-subtitle">
-                        Toutes vos données sont stockées de façon sécurisée localement dans votre navigateur (localStorage).
+                        <span data-i18n="settings.backupSubtitle">Toutes vos données sont stockées de façon sécurisée localement dans votre navigateur (localStorage).</span>
                     </p>
                     <div style="display:flex;flex-wrap:wrap;gap:12px;">
                         <button onclick="exportDataJSON()" class="btn-dark-pill">
-                            <i class="fa-solid fa-download"></i> Exporter toutes les données (JSON)
+                            <i class="fa-solid fa-download"></i> <span data-i18n="settings.export">Exporter toutes les données (JSON)</span>
                         </button>
                         <label class="btn-secondary-pill" style="cursor:pointer;">
-                            <i class="fa-solid fa-upload"></i> Importer une sauvegarde (JSON)
+                            <i class="fa-solid fa-upload"></i> <span data-i18n="settings.import">Importer une sauvegarde (JSON)</span>
                             <input type="file" id="import-file-input" onchange="importDataJSON(event)" class="hidden" style="display:none;" accept=".json">
                         </label>
                     </div>
@@ -529,7 +529,7 @@
 
                 <div style="display:flex;justify-content:flex-end;margin-top:28px;">
                     <button onclick="saveSettings()" class="btn-primary-pill">
-                        <i class="fa-solid fa-check"></i> Enregistrer le profil
+                        <i class="fa-solid fa-check"></i> <span data-i18n="settings.saveProfile">Enregistrer le profil</span>
                     </button>
                 </div>
 
@@ -544,15 +544,15 @@
             <div class="accent-blue-card" style="margin-bottom:24px;">
                 <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;">
                     <div>
-                        <span style="font-size:0.8rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.85);">Tutoriel Vidéo & Guide Rapide</span>
-                        <h3 style="font-size:1.5rem;font-weight:800;margin-top:6px;">Prise en main en 3 minutes</h3>
+                        <span style="font-size:0.8rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.85);" data-i18n="instr.videoTag">Tutoriel Vidéo & Guide Rapide</span>
+                        <h3 style="font-size:1.5rem;font-weight:800;margin-top:6px;" data-i18n="instr.videoTitle">Prise en main en 3 minutes</h3>
                         <p style="font-size:0.85rem;color:rgba(255,255,255,0.85);margin-top:8px;max-width:520px;">
-                            Apprenez à paramétrer votre profil SIRET, créer vos clients, émettre votre première facture et l'imprimer au format PDF conforme aux normes légales de la micro-entreprise.
+                            <span data-i18n="instr.videoText">Apprenez à paramétrer votre profil SIRET, créer vos clients, émettre votre première facture et l'imprimer au format PDF conforme aux normes légales de la micro-entreprise.</span>
                         </p>
                     </div>
                     <button onclick="showToast('Ouverture du tutoriel vidéo interactif...', 'success')" style="border:none;background:var(--blue-gradient-pill);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius-card-sm);width:220px;height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#fff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">
                         <i class="fa-solid fa-circle-play" style="font-size:2.2rem;"></i>
-                        Visionner la démo
+                        <span data-i18n="instr.watchDemo">Visionner la démo</span>
                     </button>
                 </div>
             </div>
@@ -561,23 +561,23 @@
             <div class="section-grid cols-2">
                 <!-- Column 1: Step by Step Instructions -->
                 <div class="form-card" style="margin-bottom:0;">
-                    <div class="form-card-title"><i class="fa-solid fa-list-check" style="color:var(--primary-blue);"></i> Étapes pour démarrer</div>
+                    <div class="form-card-title"><i class="fa-solid fa-list-check" style="color:var(--primary-blue);"></i> <span data-i18n="instr.stepsTitle">Étapes pour démarrer</span></div>
                     <ol style="display:flex;flex-direction:column;gap:14px;font-size:0.85rem;color:var(--text-muted);list-style:decimal;padding-left:20px;line-height:1.6;">
-                        <li><strong style="color:var(--text-main);">Renseignez votre SIRET :</strong> Allez dans l'onglet <em>Mon Entreprise & TVA</em> et enregistrez vos coordonnées exactes.</li>
-                        <li><strong style="color:var(--text-main);">Configurez le régime TVA :</strong> Si vous ne facturez pas la TVA, laissez l'exonération cochée (Art. 293 B du CGI).</li>
-                        <li><strong style="color:var(--text-main);">Ajoutez un client :</strong> Dans le <em>Fichier Clients</em>, saisissez la raison sociale et l'adresse de votre client.</li>
-                        <li><strong style="color:var(--text-main);">Générez la facture :</strong> Dans l'onglet <em>Créer une Facture</em>, choisissez le client, ajoutez les prestations, puis cliquez sur <strong>Aperçu & Imprimer / PDF</strong>.</li>
+                        <li><strong style="color:var(--text-main);" data-i18n="instr.step1a">Renseignez votre SIRET :</strong> <span data-i18n="instr.step1b">Allez dans l'onglet Mon Entreprise & TVA et enregistrez vos coordonnées exactes.</span></li>
+                        <li><strong style="color:var(--text-main);" data-i18n="instr.step2a">Configurez le régime TVA :</strong> <span data-i18n="instr.step2b">Si vous ne facturez pas la TVA, laissez l'exonération cochée (Art. 293 B du CGI).</span></li>
+                        <li><strong style="color:var(--text-main);" data-i18n="instr.step3a">Ajoutez un client :</strong> <span data-i18n="instr.step3b">Dans le Fichier Clients, saisissez la raison sociale et l'adresse de votre client.</span></li>
+                        <li><strong style="color:var(--text-main);" data-i18n="instr.step4a">Générez la facture :</strong> <span data-i18n="instr.step4b">Dans l'onglet Créer une Facture, choisissez le client, ajoutez les prestations, puis cliquez sur Aperçu & Imprimer / PDF.</span></li>
                     </ol>
                 </div>
 
                 <!-- Column 2: Legal Checklist for Micro-Entrepreneurs -->
                 <div class="form-card" style="margin-bottom:0;">
-                    <div class="form-card-title"><i class="fa-solid fa-scale-balanced" style="color:var(--primary-blue);"></i> Mentions obligatoires en France</div>
+                    <div class="form-card-title"><i class="fa-solid fa-scale-balanced" style="color:var(--primary-blue);"></i> <span data-i18n="instr.checklistTitle">Mentions obligatoires en France</span></div>
                     <ul style="display:flex;flex-direction:column;gap:12px;font-size:0.85rem;color:var(--text-muted);list-style:none;line-height:1.6;">
-                        <li style="display:flex;gap:10px;"><i class="fa-solid fa-check" style="color:var(--status-success-text);margin-top:4px;"></i> Numéro SIRET et adresse de l'émetteur.</li>
-                        <li style="display:flex;gap:10px;"><i class="fa-solid fa-check" style="color:var(--status-success-text);margin-top:4px;"></i> Numérotation unique et chronologique sans rupture.</li>
-                        <li style="display:flex;gap:10px;"><i class="fa-solid fa-check" style="color:var(--status-success-text);margin-top:4px;"></i> Mention <em>"TVA non applicable, art. 293 B du CGI"</em> si exonéré.</li>
-                        <li style="display:flex;gap:10px;"><i class="fa-solid fa-check" style="color:var(--status-success-text);margin-top:4px;"></i> Date d'échéance et conditions de pénalités de retard.</li>
+                        <li style="display:flex;gap:10px;"><i class="fa-solid fa-check" style="color:var(--status-success-text);margin-top:4px;"></i> <span data-i18n="instr.check1">Numéro SIRET et adresse de l'émetteur.</span></li>
+                        <li style="display:flex;gap:10px;"><i class="fa-solid fa-check" style="color:var(--status-success-text);margin-top:4px;"></i> <span data-i18n="instr.check2">Numérotation unique et chronologique sans rupture.</span></li>
+                        <li style="display:flex;gap:10px;"><i class="fa-solid fa-check" style="color:var(--status-success-text);margin-top:4px;"></i> <span data-i18n="instr.check3a">Mention </span><em>"TVA non applicable, art. 293 B du CGI"</em><span data-i18n="instr.check3b"> si exonéré.</span></li>
+                        <li style="display:flex;gap:10px;"><i class="fa-solid fa-check" style="color:var(--status-success-text);margin-top:4px;"></i> <span data-i18n="instr.check4">Date d'échéance et conditions de pénalités de retard.</span></li>
                     </ul>
                 </div>
             </div>
@@ -591,31 +591,31 @@
 <div id="modal-client" class="modal-overlay hidden">
     <div class="modal-card">
         <div class="modal-title">
-            <span id="modal-client-title">Nouveau Client</span>
+            <span id="modal-client-title" data-i18n="clients.modalNew">Nouveau Client</span>
             <button onclick="closeClientModal()" class="icon-btn"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <input type="hidden" id="modal-client-id">
         <div class="form-group">
-            <label class="form-label" for="modal-client-name">Nom / Raison Sociale *</label>
+            <label data-i18n="clients.formName" class="form-label" for="modal-client-name">Nom / Raison Sociale *</label>
             <input type="text" id="modal-client-name" class="input-pill">
         </div>
         <div class="form-group">
-            <label class="form-label" for="modal-client-address">Adresse Postale *</label>
+            <label data-i18n="clients.formAddress" class="form-label" for="modal-client-address">Adresse Postale *</label>
             <textarea id="modal-client-address" rows="2" class="input-pill"></textarea>
         </div>
         <div class="form-group" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:0;">
             <div class="form-group" style="margin-bottom:0;">
                 <label class="form-label" for="modal-client-siret"><span data-i18n-taxid>SIRET / Num TVA</span></label>
-                <input type="text" id="modal-client-siret" data-input="taxid" class="input-pill">
+                <input type="text" id="modal-client-siret" data-input="taxid" class="input-pill" placeholder="SIRET / Num TVA">
             </div>
             <div class="form-group" style="margin-bottom:0;">
-                <label class="form-label" for="modal-client-email">Email</label>
+                <label data-i18n="clients.formEmail" class="form-label" for="modal-client-email">Email</label>
                 <input type="email" id="modal-client-email" class="input-pill">
             </div>
         </div>
         <div class="modal-actions">
-            <button onclick="closeClientModal()" class="btn-secondary-pill">Annuler</button>
-            <button onclick="saveClientFromModal()" class="btn-primary-pill">Enregistrer</button>
+            <button onclick="closeClientModal()" class="btn-secondary-pill" data-i18n="clients.cancel">Annuler</button>
+            <button onclick="saveClientFromModal()" class="btn-primary-pill" data-i18n="clients.save">Enregistrer</button>
         </div>
     </div>
 </div>
@@ -624,7 +624,7 @@
 <div id="modal-product" class="modal-overlay hidden">
     <div class="modal-card">
         <div class="modal-title">
-            <span id="modal-product-title">Nouveau Produit / Prestation</span>
+            <span id="modal-product-title" data-i18n="products.modalNew">Nouveau Produit / Prestation</span>
             <button onclick="closeProductModal()" class="icon-btn"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <input type="hidden" id="modal-product-id">
@@ -638,17 +638,17 @@
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
             <div class="form-group" style="margin-bottom:0;">
-                <label class="form-label" for="modal-product-price">Prix Unit. HT <span data-cur-label>(€)</span> *</label>
+                <label data-i18n="products.formPrice" class="form-label" for="modal-product-price">Prix Unit. HT <span data-cur-label>(€)</span> *</label>
                 <input type="number" step="0.01" id="modal-product-price" class="input-pill" style="font-variant-numeric:tabular-nums;">
             </div>
             <div class="form-group class-tva-col" style="margin-bottom:0;">
-                <label class="form-label" for="modal-product-tva">Taux TVA (%)</label>
+                <label data-i18n="products.formTva" class="form-label" for="modal-product-tva">Taux TVA (%)</label>
                 <input type="number" step="0.1" value="0" id="modal-product-tva" class="input-pill" style="font-variant-numeric:tabular-nums;">
             </div>
         </div>
         <div class="modal-actions">
-            <button onclick="closeProductModal()" class="btn-secondary-pill">Annuler</button>
-            <button onclick="saveProductFromModal()" class="btn-primary-pill">Enregistrer</button>
+            <button onclick="closeProductModal()" class="btn-secondary-pill" data-i18n="clients.cancel">Annuler</button>
+            <button onclick="saveProductFromModal()" class="btn-primary-pill" data-i18n="clients.save">Enregistrer</button>
         </div>
     </div>
 </div>
@@ -662,16 +662,16 @@
             <p id="print-company-details" style="font-size:0.75rem;color:#475569;white-space:pre-line;margin-top:6px;"></p>
         </div>
         <div style="text-align:right;">
-            <div style="display:inline-block;background:#0f172a;color:#ffffff;font-size:0.75rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;padding:6px 16px;border-radius:9999px;margin-bottom:8px;">FACTURE</div>
+            <div style="display:inline-block;background:#0f172a;color:#ffffff;font-size:0.75rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;padding:6px 16px;border-radius:9999px;margin-bottom:8px;" data-i18n="print.badge">FACTURE</div>
             <h2 id="print-inv-number" style="font-size:1.1rem;font-weight:800;"></h2>
-            <p style="font-size:0.75rem;color:#475569;margin-top:4px;">Date : <span id="print-inv-date"></span></p>
-            <p style="font-size:0.75rem;color:#475569;">Échéance : <span id="print-inv-duedate"></span></p>
+            <p style="font-size:0.75rem;color:#475569;margin-top:4px;"><span data-i18n="print.date">Date :</span> <span id="print-inv-date"></span></p>
+            <p style="font-size:0.75rem;color:#475569;"><span data-i18n="print.due">Échéance :</span> <span id="print-inv-duedate"></span></p>
         </div>
     </div>
 
     <!-- Destinataire -->
     <div style="margin-bottom:32px;padding:16px 20px;background:#f8f9fc;border:1px solid #e2e8f0;border-radius:16px;max-width:360px;margin-left:auto;">
-        <span style="display:block;font-size:0.65rem;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">FACTURÉ À :</span>
+        <span style="display:block;font-size:0.65rem;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;" data-i18n="print.billTo">FACTURÉ À :</span>
         <div id="print-client-details" style="font-size:0.8rem;color:#0f172a;white-space:pre-line;line-height:1.6;"></div>
     </div>
 
@@ -679,11 +679,11 @@
     <table style="width:100%;border-collapse:collapse;margin-bottom:32px;font-size:0.8rem;">
         <thead>
             <tr style="background:#f8f9fc;border-top:2px solid #e2e8f0;border-bottom:2px solid #e2e8f0;color:#475569;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;font-size:0.7rem;">
-                <th style="padding:10px 12px;text-align:left;">Description</th>
-                <th style="padding:10px 12px;text-align:center;width:60px;">Qté</th>
-                <th style="padding:10px 12px;text-align:right;width:100px;">Prix Unit. HT</th>
-                <th class="print-tva-col" style="padding:10px 12px;text-align:center;width:60px;">TVA %</th>
-                <th style="padding:10px 12px;text-align:right;width:100px;">Total HT</th>
+                <th style="padding:10px 12px;text-align:left;" data-i18n="print.colDescription">Description</th>
+                <th style="padding:10px 12px;text-align:center;width:60px;" data-i18n="invoice.colQty">Qté</th>
+                <th style="padding:10px 12px;text-align:right;width:100px;" data-i18n="print.colUnitPrice">Prix Unit. HT</th>
+                <th class="print-tva-col" style="padding:10px 12px;text-align:center;width:60px;" data-i18n="invoice.colTva">TVA %</th>
+                <th style="padding:10px 12px;text-align:right;width:100px;" data-i18n="print.colTotalHt">Total HT</th>
             </tr>
         </thead>
         <tbody id="print-items-body" style="color:#0f172a;">
@@ -695,26 +695,26 @@
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px;">
         <div style="display:flex;flex-direction:column;gap:12px;">
             <div id="print-iban-box" style="padding:14px 16px;border:1px solid #e2e8f0;background:#f8f9fc;border-radius:16px;">
-                <span style="display:block;font-weight:800;font-size:0.65rem;color:#94a3b8;text-transform:uppercase;">Règlement par virement bancaire :</span>
+                <span style="display:block;font-weight:800;font-size:0.65rem;color:#94a3b8;text-transform:uppercase;" data-i18n="print.paymentBy">Règlement par virement bancaire :</span>
                 <span id="print-iban" style="font-variant-numeric:tabular-nums;font-size:0.8rem;"></span>
             </div>
             <div id="print-terms" style="font-size:0.7rem;color:#64748b;font-style:italic;line-height:1.5;"></div>
         </div>
         <div style="background:#f8f9fc;padding:18px 20px;border-radius:16px;border:1px solid #e2e8f0;display:flex;flex-direction:column;gap:8px;font-size:0.8rem;">
             <div style="display:flex;justify-content:space-between;">
-                <span>Sous-Total HT :</span>
+                <span data-i18n="invoice.subtotal">Sous-Total HT :</span>
                 <span id="print-subtotal-ht" style="font-weight:700;font-variant-numeric:tabular-nums;"></span>
             </div>
             <div id="print-discount-row" style="display:flex;justify-content:space-between;color:#b45309;">
-                <span>Remise :</span>
+                <span data-i18n="print.discount">Remise :</span>
                 <span id="print-discount" style="font-variant-numeric:tabular-nums;"></span>
             </div>
             <div id="print-tva-row" class="print-tva-col" style="display:flex;justify-content:space-between;">
-                <span>TVA :</span>
+                <span data-i18n="print.tva">TVA :</span>
                 <span id="print-tva" style="font-variant-numeric:tabular-nums;"></span>
             </div>
             <div style="display:flex;justify-content:space-between;border-top:2px solid #cbd5e1;margin-top:6px;padding-top:10px;font-weight:800;font-size:0.9rem;">
-                <span>TOTAL NET À PAYER :</span>
+                <span data-i18n="print.totalNet">TOTAL NET À PAYER :</span>
                 <span id="print-total-net" style="font-variant-numeric:tabular-nums;"></span>
             </div>
         </div>
@@ -737,6 +737,7 @@
 <script src="js/clients.js"></script>
 <script src="js/products.js"></script>
 <script src="js/settings.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

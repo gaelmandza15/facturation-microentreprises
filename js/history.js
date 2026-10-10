@@ -46,14 +46,14 @@ function renderHistoryTable() {
             <td class="text-right cell-mono cell-strong">${fmtMoney(inv.totalNet)}</td>
             <td class="text-center">
                 <select onchange="updateInvoiceStatus('${inv.id}', this.value)" class="status-select ${statusClass}">
-                    <option value="Brouillon" ${inv.status === 'Brouillon' ? 'selected' : ''}>Brouillon</option>
-                    <option value="En attente" ${inv.status === 'En attente' ? 'selected' : ''}>En attente</option>
-                    <option value="Payée" ${inv.status === 'Payée' ? 'selected' : ''}>Payée</option>
+                    <option value="Brouillon" ${inv.status === 'Brouillon' ? 'selected' : ''}>${t('status.draft')}</option>
+                    <option value="En attente" ${inv.status === 'En attente' ? 'selected' : ''}>${t('history.statusOption.pending')}</option>
+                    <option value="Payée" ${inv.status === 'Payée' ? 'selected' : ''}>${t('status.paid')}</option>
                 </select>
             </td>
             <td class="text-right">
-                <button onclick="loadInvoiceIntoEditor('${inv.id}')" title="Éditer / Voir" class="icon-btn"><i class="fa-solid fa-pen-to-square"></i></button>
-                <button onclick="deleteInvoice('${inv.id}')" title="Supprimer" class="icon-btn danger"><i class="fa-solid fa-trash"></i></button>
+                <button onclick="loadInvoiceIntoEditor('${inv.id}')" title="${t('history.editTitle')}" class="icon-btn"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button onclick="deleteInvoice('${inv.id}')" title="${t('history.deleteTitle')}" class="icon-btn danger"><i class="fa-solid fa-trash"></i></button>
             </td>
         `;
         tbody.appendChild(tr);
@@ -66,7 +66,7 @@ function updateInvoiceStatus(id, newStatus) {
         inv.status = newStatus;
         saveState();
         renderHistoryTable();
-        showToast(`Statut de la facture ${inv.number} mis à jour : ${newStatus}`);
+        showToast(t("toast.statusUpdated", { number: inv.number, status: statusLabel(newStatus) }));
     }
 }
 
@@ -93,14 +93,14 @@ function loadInvoiceIntoEditor(id) {
     });
 
     switchTab('facture');
-    showToast(`Facture ${inv.number} chargée dans l'éditeur.`);
+    showToast(t("toast.invoiceLoaded", { number: inv.number }));
 }
 
 function deleteInvoice(id) {
-    if (confirm("Êtes-vous sûr de vouloir supprimer cette facture de l'historique ?")) {
+    if (confirm(t("toast.confirmDeleteInvoice"))) {
         state.invoices = state.invoices.filter(i => i.id !== id);
         saveState();
         renderHistoryTable();
-        showToast("Facture supprimée.");
+        showToast(t("toast.invoiceDeleted"));
     }
 }

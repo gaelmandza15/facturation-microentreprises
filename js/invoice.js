@@ -32,8 +32,8 @@ function initInvoiceForm() {
 function renderSellerSummary() {
     const s = state.settings;
     document.getElementById('seller-summary').innerHTML = `
-        <strong style="display:block;color:var(--text-main);font-weight:800;">${s.companyName || 'Mon Entreprise'}</strong>
-        <div>${currentCountry().taxIdLabel} : ${s.siret || 'Non renseigné'}${currentCountry().altIdLabel && s.ape ? ' (' + currentCountry().altIdLabel + ' : ' + s.ape + ')' : ''}</div>
+        <strong style="display:block;color:var(--text-main);font-weight:800;">${s.companyName || t('settings.defaultCompanyName')}</strong>
+        <div>${currentCountry().taxIdLabel} : ${s.siret || t('settings.notProvided')}${currentCountry().altIdLabel && s.ape ? ' (' + currentCountry().altIdLabel + ' : ' + s.ape + ')' : ''}</div>
         <div>${s.address || ''}</div>
         <div>${s.contact || ''}</div>
     `;
@@ -41,7 +41,7 @@ function renderSellerSummary() {
 
 function populateClientDropdown() {
     const select = document.getElementById('inv-client-select');
-    select.innerHTML = '<option value="">-- Sélectionner un client enregistré --</option>';
+    select.innerHTML = `<option value="">${t('invoice.selectClient')}</option>`;
     state.clients.forEach(c => {
         select.innerHTML += `<option value="${c.id}">${c.name}</option>`;
     });
@@ -49,7 +49,7 @@ function populateClientDropdown() {
 
 function populateProductDropdown() {
     const select = document.getElementById('quick-product-select');
-    select.innerHTML = '<option value="">+ Ajouter depuis la liste de produits...</option>';
+    select.innerHTML = `<option value="">${t('invoice.addFromCatalog')}</option>`;
     state.products.forEach(p => {
         select.innerHTML += `<option value="${p.id}">${p.name} (${fmtMoney(p.price)})</option>`;
     });
@@ -77,7 +77,7 @@ function addInvoiceItemRow(desc = '', qty = 1, unitPrice = 0, tva = null) {
     tr.id = rowId;
     tr.innerHTML = `
         <td>
-            <input type="text" value="${desc}" placeholder="Désignation du service ou bien..." class="item-desc item-input">
+            <input type="text" value="${desc}" placeholder="${t('invoice.descPlaceholder')}" class="item-desc item-input">
         </td>
         <td>
             <input type="number" value="${qty}" min="1" step="1" oninput="calculateInvoiceTotals()" class="item-qty item-input mono text-center">
@@ -92,7 +92,7 @@ function addInvoiceItemRow(desc = '', qty = 1, unitPrice = 0, tva = null) {
             —
         </td>
         <td class="text-center">
-            <button onclick="removeInvoiceItemRow('${rowId}')" class="icon-btn danger" title="Supprimer la ligne"><i class="fa-solid fa-trash-can"></i></button>
+            <button onclick="removeInvoiceItemRow('${rowId}')" class="icon-btn danger" title="${t('invoice.deleteRowTitle')}"><i class="fa-solid fa-trash-can"></i></button>
         </td>
     `;
     tbody.appendChild(tr);
@@ -152,13 +152,13 @@ function calculateInvoiceTotals() {
 
 function clearInvoiceForm() {
     initInvoiceForm();
-    showToast("Formulaire de facture réinitialisé.");
+    showToast(t("toast.formReset"));
 }
 
 function saveCurrentInvoice() {
     const clientName = document.getElementById('inv-client-name').value.trim();
     if (!clientName) {
-        showToast("Veuillez indiquer au moins le nom du client.", "error");
+        showToast(t("toast.missingClientName"), "error");
         return;
     }
 
@@ -217,7 +217,7 @@ function saveCurrentInvoice() {
     }
 
     saveState();
-    showToast(`Facture ${number} enregistrée dans l'historique !`);
+    showToast(t("toast.invoiceSaved", { number }));
     switchTab('historique');
 }
 
@@ -225,7 +225,7 @@ function previewAndPrintInvoice() {
     // Populate printable HTML template
     const s = state.settings;
     document.getElementById('print-company-name').textContent = s.companyName;
-    document.getElementById('print-company-details').textContent = `${s.address}\nSIRET : ${s.siret} ${s.ape ? ' - APE: ' + s.ape : ''}\n${s.contact}`;
+    document.getElementById('print-company-details').textContent = `${s.address}\n${currentCountry().taxIdLabel} : ${s.siret} ${s.ape ? ' - APE: ' + s.ape : ''}\n${s.contact}`;
 
     document.getElementById('print-inv-number').textContent = document.getElementById('inv-number').value;
     document.getElementById('print-inv-date').textContent = document.getElementById('inv-date').value;
@@ -272,8 +272,8 @@ function previewAndPrintInvoice() {
         document.getElementById('print-tva-mention').textContent = country.exemptNote;
     } else {
         document.getElementById('print-tva-mention').textContent = country.eu
-            ? "TVA acquittée sur les débits."
-            : "Taxe indirecte le cas échéant selon la réglementation du " + country.name + ".";
+            ? t("print.tvaPaidNote")
+            : t("print.otherTaxNote").replace("{country}", country.name);
     }
     document.querySelector(".print-late-note").textContent = country.lateNote;
     document.getElementById('print-footer-siret').textContent = `${s.companyName} - ${country.taxIdLabel} : ${s.siret}${country.altIdLabel && s.ape ? ' - ' + country.altIdLabel + ' : ' + s.ape : ''}`;
