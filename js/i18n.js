@@ -189,7 +189,7 @@ const I18N = {
         "instr.step4a": "Generate the invoice:",
         "instr.step4b": "In the Create Invoice tab, choose the client, add the services, then click Preview & Print / PDF.",
         "instr.checklistTitle": "Mandatory mentions in {country}",
-        "instr.check1": "Issuer's SIRET number and address.",
+        "instr.check1": "Issuer's tax ID number ({taxid}) and address.",
         "instr.check2": "Unique, chronological numbering without gaps.",
         "instr.check3": "Mention <em>\"TVA non applicable, art. 293 B du CGI\"</em> (or the local exemption wording of your country) if exempt.",
         "instr.check4": "Due date and late-payment penalty conditions.",
@@ -408,10 +408,10 @@ const I18N = {
 
         "instr.videoTag": "Tutoriel Vidéo & Guide Rapide",
         "instr.videoTitle": "Prise en main en 3 minutes",
-        "instr.videoText": "Apprenez à paramétrer votre profil SIRET, créer vos clients, émettre votre première facture et l'imprimer au format PDF conforme aux normes légales de la micro-entreprise.",
+        "instr.videoText": "Apprenez à paramétrer votre profil d'identifiant fiscal ({taxid}), créer vos clients, émettre votre première facture et l'imprimer au format PDF conforme aux normes légales de la micro-entreprise.",
         "instr.watchDemo": "Visionner la démo",
         "instr.stepsTitle": "Étapes pour démarrer",
-        "instr.step1a": "Renseignez votre SIRET :",
+        "instr.step1a": "Renseignez votre identifiant fiscal ({taxid}) :",
         "instr.step1b": "Allez dans l'onglet Mon Entreprise & TVA et enregistrez vos coordonnées exactes.",
         "instr.step2a": "Configurez le régime TVA :",
         "instr.step2b": "Si vous ne facturez pas la TVA, laissez l'exonération cochée (Art. 293 B du CGI).",
@@ -420,7 +420,7 @@ const I18N = {
         "instr.step4a": "Générez la facture :",
         "instr.step4b": "Dans l'onglet Créer une Facture, choisissez le client, ajoutez les prestations, puis cliquez sur Aperçu & Imprimer / PDF.",
         "instr.checklistTitle": "Mentions obligatoires en {country}",
-        "instr.check1": "Numéro SIRET et adresse de l'émetteur.",
+        "instr.check1": "Numéro d'identifiant fiscal ({taxid}) et adresse de l'émetteur.",
         "instr.check2": "Numérotation unique et chronologique sans rupture.",
         "instr.check3": "Mention <em>\"TVA non applicable, art. 293 B du CGI\"</em> (ou la mention d'exonération locale de votre pays) si exonéré.",
         "instr.check4": "Date d'échéance et conditions de pénalités de retard.",
@@ -485,6 +485,12 @@ function t(key, params) {
     let s = (I18N[lang] && I18N[lang][key]);
     if (s === undefined) s = I18N.en[key]; // filet de sécurité : clé absente de la langue active
     if (s === undefined) return key;       // clé totalement inconnue -> affichage brut + repérable
+    // Paramètre auto : {taxid} = libellé de l'identifiant fiscal du pays
+    // (SIRET en France, NINEA au Sénégal, EIN aux USA...) — jamais codé en dur.
+    if (typeof currentCountry === 'function') {
+        const taxIdLabel = (currentCountry().taxIdLabel || "").replace(/\s*\([^)]*\)\s*$/, "");
+        s = s.replace(/\{taxid\}/g, taxIdLabel);
+    }
     if (params) {
         Object.keys(params).forEach(p => { s = s.replace(new RegExp(`\\{${p}\\}`, "g"), params[p]); });
     }
