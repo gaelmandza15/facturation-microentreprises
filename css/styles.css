@@ -741,12 +741,15 @@ select.status-select.brouillon {
 
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* minmax(0, 1fr) : les colonnes peuvent rétrécir sous la largeur du contenu,
+     ce qui empêche les cartes de déborder sur le côté droit (pas de scroll horizontal). */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
+  width: 100%;
 }
 
-@media (max-width: 1100px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 700px) { .cards-grid { grid-template-columns: 1fr; } }
+@media (max-width: 1100px) { .cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .cards-grid { grid-template-columns: minmax(0, 1fr); } }
 
 .client-card {
   background-color: var(--bg-card);
@@ -761,18 +764,31 @@ select.status-select.brouillon {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 10px;
+}
+
+/* Le bloc titre + identifiant fiscal doit pouvoir rétrécir sous la largeur
+   de son contenu, sinon une longue ligne "SIRET : ..." pousse les boutons
+   et fait déborder la carte hors de la grille. */
+.client-card .client-head > div:first-child {
+  min-width: 0;
 }
 
 .client-card .client-name {
   font-weight: 800;
   font-size: 1rem;
   color: var(--text-main);
+  overflow-wrap: anywhere;
 }
 
 .client-card .client-meta {
+  display: block;
   font-size: 0.75rem;
   color: var(--text-light);
   font-variant-numeric: tabular-nums;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .client-card .client-address {
