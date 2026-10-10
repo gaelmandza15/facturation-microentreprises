@@ -487,6 +487,12 @@ function applyCountrySettings() {
     const exemptEl = document.getElementById('tva-legal-notice-display');
     if (exemptEl) exemptEl.textContent = country.exemptNote;
 
+    // Titre "Mentions obligatoires en <pays>" adapté au pays sélectionné
+    const checklistTitleEl = document.getElementById('checklist-country-title');
+    if (checklistTitleEl && typeof t === 'function') {
+        checklistTitleEl.textContent = t("instr.checklistTitle", { country: country.name });
+    }
+
     updateBadges();
     applyTvaDisplaySettings();
     calculateInvoiceTotals();
