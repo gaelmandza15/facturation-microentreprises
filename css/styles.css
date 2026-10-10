@@ -346,6 +346,19 @@ body {
   color: rgba(255, 255, 255, 0.75);
 }
 
+/* Bannière "Instructions & Tuto" : contenu aligné à gauche et pleine largeur
+   (empêche tout centrage/compactage du texte "SIRET ... France") */
+.instructions-hero {
+  display: block !important;
+  text-align: left !important;
+}
+.instructions-hero > div { width: 100%; }
+.instructions-hero button { flex-shrink: 0; margin-left: auto; }
+
+@media (max-width: 600px) {
+  .instructions-hero button { margin-left: 0; }
+}
+
 /* ==========================================================================
    CARTES DE CONTENU GÉNÉRIQUES
    ========================================================================== */

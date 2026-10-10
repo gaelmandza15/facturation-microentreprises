@@ -536,16 +536,16 @@
         <section id="tab-instructions" class="tab-content">
 
             <!-- Video Tutorial Simulation Frame -->
-            <div class="accent-blue-card" style="margin-bottom:24px;">
+            <div class="accent-blue-card instructions-hero" style="margin-bottom:24px;">
                 <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;">
-                    <div>
+                    <div style="min-width:0;">
                         <span style="font-size:0.8rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.85);" data-i18n="instr.videoTag">Tutoriel Vidéo & Guide Rapide</span>
                         <h3 style="font-size:1.5rem;font-weight:800;margin-top:6px;" data-i18n="instr.videoTitle">Prise en main en 3 minutes</h3>
                         <p style="font-size:0.85rem;color:rgba(255,255,255,0.85);margin-top:8px;max-width:520px;">
                             <span data-i18n="instr.videoText">Apprenez à paramétrer votre profil SIRET, créer vos clients, émettre votre première facture et l'imprimer au format PDF conforme aux normes légales de la micro-entreprise.</span>
                         </p>
                     </div>
-                    <button onclick="showToast('Ouverture du tutoriel vidéo interactif...', 'success')" style="border:none;background:var(--blue-gradient-pill);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius-card-sm);width:220px;height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#fff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">
+                    <button onclick="showToast(t('toast.openTutorial'), 'success')" style="border:none;background:var(--blue-gradient-pill);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius-card-sm);width:220px;height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#fff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">
                         <i class="fa-solid fa-circle-play" style="font-size:2.2rem;"></i>
                         <span data-i18n="instr.watchDemo">Visionner la démo</span>
                     </button>
