@@ -33,7 +33,7 @@ function renderSellerSummary() {
     const s = state.settings;
     document.getElementById('seller-summary').innerHTML = `
         <strong style="display:block;color:var(--text-main);font-weight:800;">${s.companyName || 'Mon Entreprise'}</strong>
-        <div>SIRET : ${s.siret || 'Non renseigné'} ${s.ape ? ' (APE : ' + s.ape + ')' : ''}</div>
+        <div>${currentCountry().taxIdLabel} : ${s.siret || 'Non renseigné'}${currentCountry().altIdLabel && s.ape ? ' (' + currentCountry().altIdLabel + ' : ' + s.ape + ')' : ''}</div>
         <div>${s.address || ''}</div>
         <div>${s.contact || ''}</div>
     `;
@@ -51,7 +51,7 @@ function populateProductDropdown() {
     const select = document.getElementById('quick-product-select');
     select.innerHTML = '<option value="">+ Ajouter depuis la liste de produits...</option>';
     state.products.forEach(p => {
-        select.innerHTML += `<option value="${p.id}">${p.name} (${p.price.toFixed(2)} €)</option>`;
+        select.innerHTML += `<option value="${p.id}">${p.name} (${fmtMoney(p.price)})</option>`;
     });
 }
 
@@ -87,7 +87,7 @@ function addInvoiceItemRow(desc = '', qty = 1, unitPrice = 0, tva = 0) {
             <input type="number" value="${tva}" step="0.1" oninput="calculateInvoiceTotals()" class="item-tva item-input mono text-center">
         </td>
         <td class="text-right cell-mono cell-strong item-line-total">
-            0.00 €
+            —
         </td>
         <td class="text-center">
             <button onclick="removeInvoiceItemRow('${rowId}')" class="icon-btn danger" title="Supprimer la ligne"><i class="fa-solid fa-trash-can"></i></button>
@@ -128,7 +128,7 @@ function calculateInvoiceTotals() {
         subtotalHt += lineTotalHt;
         tvaTotal += lineTva;
 
-        row.querySelector('.item-line-total').textContent = lineTotalHt.toFixed(2) + ' €';
+        row.querySelector('.item-line-total').textContent = fmtMoney(lineTotalHt);
     });
 
     const discountPercent = parseFloat(document.getElementById('inv-discount').value) || 0;
@@ -142,10 +142,10 @@ function calculateInvoiceTotals() {
 
     const totalNet = netSubtotalHt + (state.settings.tvaExempt ? 0 : tvaTotal);
 
-    document.getElementById('calc-subtotal-ht').textContent = subtotalHt.toFixed(2) + ' €';
-    document.getElementById('calc-discount-val').textContent = '-' + discountVal.toFixed(2) + ' €';
-    document.getElementById('calc-tva-total').textContent = tvaTotal.toFixed(2) + ' €';
-    document.getElementById('calc-total-net').textContent = totalNet.toFixed(2) + ' €';
+    document.getElementById('calc-subtotal-ht').textContent = fmtMoney(subtotalHt);
+    document.getElementById('calc-discount-val').textContent = '-' + fmtMoney(discountVal);
+    document.getElementById('calc-tva-total').textContent = fmtMoney(tvaTotal);
+    document.getElementById('calc-total-net').textContent = fmtMoney(totalNet);
 }
 
 function clearInvoiceForm() {
@@ -177,11 +177,13 @@ function saveCurrentInvoice() {
         }
     });
 
-    const subtotalHt = parseFloat(document.getElementById('calc-subtotal-ht').textContent);
+    const rawSubtotalHt = items.reduce((a, it) => a + it.totalHt, 0);
+    const rawTvaTotal = state.settings.tvaExempt ? 0 : items.reduce((a, it) => a + it.totalHt * (it.tva / 100), 0);
     const discountPercent = parseFloat(document.getElementById('inv-discount').value) || 0;
-    const discountVal = parseFloat(document.getElementById('calc-discount-val').textContent.replace('-', ''));
-    const tvaTotal = state.settings.tvaExempt ? 0 : parseFloat(document.getElementById('calc-tva-total').textContent);
-    const totalNet = parseFloat(document.getElementById('calc-total-net').textContent);
+    const discountVal = rawSubtotalHt * (discountPercent / 100);
+    const subtotalHt = rawSubtotalHt;
+    const tvaTotal = (!state.settings.tvaExempt && discountPercent > 0) ? rawTvaTotal * (1 - discountPercent / 100) : rawTvaTotal;
+    const totalNet = (rawSubtotalHt - discountVal) + (state.settings.tvaExempt ? 0 : tvaTotal);
 
     const newInvoice = {
         id: "inv_" + Date.now(),
@@ -230,7 +232,7 @@ function previewAndPrintInvoice() {
     const clientName = document.getElementById('inv-client-name').value;
     const clientAddress = document.getElementById('inv-client-address').value;
     const clientSiret = document.getElementById('inv-client-siret').value;
-    document.getElementById('print-client-details').textContent = `${clientName}\n${clientAddress}${clientSiret ? '\nSIRET: ' + clientSiret : ''}`;
+    document.getElementById('print-client-details').textContent = `${clientName}\n${clientAddress}${clientSiret ? '\n' + currentCountry().taxIdLabel + ' : ' + clientSiret : ''}`;
 
     const tbody = document.getElementById('print-items-body');
     tbody.innerHTML = '';
@@ -247,9 +249,9 @@ function previewAndPrintInvoice() {
             tr.innerHTML = `
                 <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">${desc}</td>
                 <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e2e8f0;">${qty}</td>
-                <td style="padding:10px 12px;text-align:right;font-variant-numeric:tabular-nums;border-bottom:1px solid #e2e8f0;">${unitPrice} €</td>
+                <td style="padding:10px 12px;text-align:right;font-variant-numeric:tabular-nums;border-bottom:1px solid #e2e8f0;">${fmtMoney(parseFloat(unitPrice))}</td>
                 <td class="print-tva-col" style="padding:10px 12px;text-align:center;font-variant-numeric:tabular-nums;border-bottom:1px solid #e2e8f0;">${tva}%</td>
-                <td style="padding:10px 12px;text-align:right;font-variant-numeric:tabular-nums;font-weight:700;border-bottom:1px solid #e2e8f0;">${totalHt} €</td>
+                <td style="padding:10px 12px;text-align:right;font-variant-numeric:tabular-nums;font-weight:700;border-bottom:1px solid #e2e8f0;">${fmtMoney(parseFloat(totalHt))}</td>
             `;
             tbody.appendChild(tr);
         }
@@ -263,12 +265,16 @@ function previewAndPrintInvoice() {
     document.getElementById('print-iban').textContent = document.getElementById('inv-iban').value;
     document.getElementById('print-terms').textContent = document.getElementById('inv-terms').value;
 
+    const country = currentCountry();
     if (s.tvaExempt) {
-        document.getElementById('print-tva-mention').textContent = "Franchise en base de TVA - TVA non applicable, art. 293 B du CGI.";
+        document.getElementById('print-tva-mention').textContent = country.exemptNote;
     } else {
-        document.getElementById('print-tva-mention').textContent = "TVA acquittée sur les débits.";
+        document.getElementById('print-tva-mention').textContent = country.eu
+            ? "TVA acquittée sur les débits."
+            : "Taxe indirecte le cas échéant selon la réglementation du " + country.name + ".";
     }
-    document.getElementById('print-footer-siret').textContent = `${s.companyName} - SIRET : ${s.siret}`;
+    document.querySelector(".print-late-note").textContent = country.lateNote;
+    document.getElementById('print-footer-siret').textContent = `${s.companyName} - ${country.taxIdLabel} : ${s.siret}${country.altIdLabel && s.ape ? ' - ' + country.altIdLabel + ' : ' + s.ape : ''}`;
 
     window.print();
 }

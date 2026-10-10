@@ -21,8 +21,8 @@ function renderHistoryTable() {
         if (inv.status === 'En attente') pendingCa += inv.totalNet;
     });
 
-    document.getElementById('stat-total-ca').textContent = totalCa.toFixed(2) + ' €';
-    document.getElementById('stat-pending-ca').textContent = pendingCa.toFixed(2) + ' €';
+    document.getElementById('stat-total-ca').textContent = fmtMoney(totalCa);
+    document.getElementById('stat-pending-ca').textContent = fmtMoney(pendingCa);
     document.getElementById('stat-total-invoices').textContent = state.invoices.length;
 
     if (filteredInvoices.length === 0) {
@@ -43,7 +43,7 @@ function renderHistoryTable() {
             <td class="cell-mono cell-strong" style="color:var(--primary-blue);">${inv.number}</td>
             <td class="cell-muted">${inv.date}</td>
             <td>${inv.clientName}</td>
-            <td class="text-right cell-mono cell-strong">${inv.totalNet.toFixed(2)} €</td>
+            <td class="text-right cell-mono cell-strong">${fmtMoney(inv.totalNet)}</td>
             <td class="text-center">
                 <select onchange="updateInvoiceStatus('${inv.id}', this.value)" class="status-select ${statusClass}">
                     <option value="Brouillon" ${inv.status === 'Brouillon' ? 'selected' : ''}>Brouillon</option>

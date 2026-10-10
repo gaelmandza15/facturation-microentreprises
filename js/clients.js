@@ -18,7 +18,7 @@ function renderClientsGrid() {
             <div class="client-head">
                 <div>
                     <div class="client-name">${c.name}</div>
-                    <span class="client-meta">${c.siret ? 'SIRET : ' + c.siret : 'Pas de SIRET'}</span>
+                    <span class="client-meta">${c.siret ? currentCountry().taxIdLabel + ' : ' + c.siret : 'Identifiant fiscal non renseigné'}</span>
                 </div>
                 <div style="display:flex;gap:6px;">
                     <button onclick="editClient('${c.id}')" class="icon-btn" title="Modifier"><i class="fa-solid fa-pen"></i></button>

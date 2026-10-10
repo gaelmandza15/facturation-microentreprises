@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/styles.css?v=3">
+    <link rel="stylesheet" href="css/styles.css?v=4">
 </head>
 <body>
 
@@ -140,7 +140,7 @@
                             <input type="text" id="inv-client-name" placeholder="Nom ou Raison Sociale du client *" class="input-pill">
                             <textarea id="inv-client-address" rows="2" placeholder="Adresse postale complète du client" class="input-pill"></textarea>
                             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-                                <input type="text" id="inv-client-siret" placeholder="SIRET / Num TVA" class="input-pill">
+                                <input type="text" id="inv-client-siret" data-input="taxid" placeholder="SIRET / Num TVA" class="input-pill">
                                 <input type="email" id="inv-client-email" placeholder="Email de contact" class="input-pill">
                             </div>
                         </div>
@@ -162,9 +162,9 @@
                                 <tr>
                                     <th style="width:40%;">Description de la prestation / produit</th>
                                     <th class="text-center" style="width:80px;">Qté</th>
-                                    <th class="text-right" style="width:120px;">Prix Unit. HT (€)</th>
+                                    <th class="text-right" style="width:120px;">Prix Unit. HT <span data-cur-label>(€)</span></th>
                                     <th class="text-center class-tva-col" style="width:90px;">TVA %</th>
-                                    <th class="text-right" style="width:110px;">Total HT (€)</th>
+                                    <th class="text-right" style="width:110px;">Total HT <span data-cur-label>(€)</span></th>
                                     <th class="text-center" style="width:60px;"></th>
                                 </tr>
                             </thead>
@@ -197,7 +197,7 @@
                     <div class="totals-panel">
                         <div class="totals-row">
                             <span>Sous-Total HT :</span>
-                            <span id="calc-subtotal-ht" class="value">0.00 €</span>
+                            <span id="calc-subtotal-ht" class="value">—</span>
                         </div>
                         <div class="totals-row">
                             <span>Remise globale (%) :</span>
@@ -205,15 +205,15 @@
                         </div>
                         <div class="totals-row discount">
                             <span>Montant Remise :</span>
-                            <span id="calc-discount-val" class="value">-0.00 €</span>
+                            <span id="calc-discount-val" class="value">—</span>
                         </div>
                         <div class="totals-row class-tva-col" id="tva-breakdown-row">
                             <span>Montant TVA :</span>
-                            <span id="calc-tva-total" class="value">0.00 €</span>
+                            <span id="calc-tva-total" class="value">—</span>
                         </div>
                         <div class="totals-row net">
                             <span>NET À PAYER :</span>
-                            <span id="calc-total-net" class="value">0.00 €</span>
+                            <span id="calc-total-net" class="value">—</span>
                         </div>
                         <div id="tva-legal-notice-display" class="legal-notice">
                             Franchise en base de TVA - TVA non applicable, art. 293 B du CGI.
@@ -255,7 +255,7 @@
             <div class="stats-grid">
                 <div class="accent-blue-card">
                     <span class="card-title"><i class="fa-solid fa-sack-dollar"></i> Chiffre d'Affaires Total (Payé)</span>
-                    <span class="amount-pill" id="stat-total-ca">0.00 €</span>
+                    <span class="amount-pill" id="stat-total-ca">—</span>
                     <span class="card-hint">Total des factures réglées par vos clients.</span>
                 </div>
                 <div class="stat-card">
@@ -263,7 +263,7 @@
                         <span class="stat-icon-badge"><i class="fa-solid fa-hourglass-half"></i></span>
                         En attente de règlement
                     </div>
-                    <div class="stat-value" id="stat-pending-ca">0.00 €</div>
+                    <div class="stat-value" id="stat-pending-ca">—</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-card-header">
@@ -365,7 +365,7 @@
                             <tr>
                                 <th>Référence / Nom</th>
                                 <th>Description</th>
-                                <th class="text-right">Prix Unitaire HT (€)</th>
+                                <th class="text-right">Prix Unitaire HT <span data-cur-label>(€)</span></th>
                                 <th class="text-center class-tva-col">TVA %</th>
                                 <th class="text-right">Actions</th>
                             </tr>
@@ -392,11 +392,11 @@
                         <input type="text" id="set-company-name" class="input-pill">
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="set-company-siret">Numéro SIRET (14 chiffres) *</label>
-                        <input type="text" id="set-company-siret" placeholder="123 456 789 00012" class="input-pill">
+                        <label class="form-label" for="set-company-siret"><span data-i18n-taxid>Numéro SIRET (14 chiffres)</span> *</label>
+                        <input type="text" id="set-company-siret" data-input="taxid" placeholder="123 456 789 00012" class="input-pill">
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="set-company-ape">Code NAF / APE <span class="optional">(Optionnel)</span></label>
+                        <label class="form-label" for="set-company-ape"><span data-i18n-altid>Code NAF / APE</span> <span class="optional">(Optionnel)</span></label>
                         <input type="text" id="set-company-ape" placeholder="ex: 6201Z" class="input-pill">
                     </div>
                     <div class="form-group">
@@ -413,15 +413,45 @@
                     </div>
                 </div>
 
-                <!-- TVA Regime Settings -->
+                <!-- Localisation : pays, devise, format numérique -->
                 <div style="border-top:1px solid var(--border-color);padding-top:24px;margin-top:8px;">
+                    <div class="form-card-title" style="margin-bottom:4px;"><i class="fa-solid fa-globe" style="color:var(--primary-blue);"></i> Localisation & Devise</div>
+                    <p class="form-card-subtitle">Adapte automatiquement les mentions légales TVA, l'identifiant fiscal, la devise et le format des montants sur vos factures.</p>
+                    <div class="section-grid cols-3">
+                        <div class="form-group">
+                            <label class="form-label" for="set-country">Pays d'imposition *</label>
+                            <select id="set-country" onchange="onCountryChange()" class="input-pill" style="font-weight:600;"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="set-currency">Devise d'affichage</label>
+                            <select id="set-currency" onchange="onCurrencyChange()" class="input-pill"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="set-locale">Format des nombres</label>
+                            <select id="set-locale" onchange="onLocaleChange()" class="input-pill">
+                                <option value="fr">1 234,56 (français)</option>
+                                <option value="en">1,234.56 (anglais/US)</option>
+                                <option value="es">1.234,56 (espagnol)</option>
+                                <option value="de">1.234,56 (allemand)</option>
+                                <option value="pt">1.234,56 (portugais)</option>
+                                <option value="ja">1,234.56 (japonais/chinois)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="eu-intra-note" class="legal-notice" style="display:none;">
+                        <i class="fa-solid fa-info-circle"></i> Pays UE : pour une prestation transfrontalière à un client professionnel, vérifiez l'autoliquidation (reverse charge) et mentionnez votre numéro de TVA intracommunautaire. Les seuils et taux affichés sont indicatifs — confirmez avec votre administration fiscale locale.
+                    </div>
+                </div>
+
+                <!-- TVA Regime Settings -->
+                <div style="border-top:1px solid var(--border-color);padding-top:24px;margin-top:24px;">
                     <div class="form-card-title" style="margin-bottom:16px;">Régime de TVA</div>
 
                     <label style="display:flex;align-items:flex-start;gap:14px;padding:18px 20px;background:var(--primary-blue-light);border-radius:var(--radius-card-sm);cursor:pointer;">
                         <input type="checkbox" id="set-tva-exempt" onchange="toggleTvaRegime()" style="margin-top:3px;width:16px;height:16px;accent-color:var(--primary-blue);cursor:pointer;">
                         <div>
                             <span style="font-size:0.9rem;font-weight:700;color:var(--text-main);">
-                                Exonéré de TVA (Franchise en base - Article 293 B du CGI)
+                                Exonéré de TVA / TVH / GST / TPS (franchise en base du pays sélectionné)
                             </span>
                             <p style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;">
                                 Cochez cette case si vous bénéficiez du statut de micro-entrepreneur non assujetti à la TVA. Les colonnes TVA seront masquées et la mention obligatoire sera ajoutée automatiquement.
@@ -525,8 +555,8 @@
         </div>
         <div class="form-group" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:0;">
             <div class="form-group" style="margin-bottom:0;">
-                <label class="form-label" for="modal-client-siret">SIRET / Num TVA</label>
-                <input type="text" id="modal-client-siret" class="input-pill">
+                <label class="form-label" for="modal-client-siret"><span data-i18n-taxid>SIRET / Num TVA</span></label>
+                <input type="text" id="modal-client-siret" data-input="taxid" class="input-pill">
             </div>
             <div class="form-group" style="margin-bottom:0;">
                 <label class="form-label" for="modal-client-email">Email</label>
@@ -558,7 +588,7 @@
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
             <div class="form-group" style="margin-bottom:0;">
-                <label class="form-label" for="modal-product-price">Prix Unit. HT (€) *</label>
+                <label class="form-label" for="modal-product-price">Prix Unit. HT <span data-cur-label>(€)</span> *</label>
                 <input type="number" step="0.01" id="modal-product-price" class="input-pill" style="font-variant-numeric:tabular-nums;">
             </div>
             <div class="form-group class-tva-col" style="margin-bottom:0;">
@@ -643,12 +673,13 @@
     <!-- Footer Mentions Legales -->
     <div style="border-top:1px solid #e2e8f0;padding-top:16px;font-size:0.65rem;color:#64748b;text-align:center;display:flex;flex-direction:column;gap:4px;">
         <p id="print-tva-mention" style="font-weight:700;"></p>
-        <p>En cas de retard de paiement, une pénalité égale à 3 fois le taux d'intérêt légal sera appliquée. Indemnité forfaitaire pour frais de recouvrement : 40 €.</p>
+        <p class="print-late-note">En cas de retard de paiement, une pénalité égale à 3 fois le taux d'intérêts légal sera appliquée. Indemnité forfaitaire pour frais de recouvrement : 40 €.</p>
         <p id="print-footer-siret"></p>
     </div>
 </div>
 
 <!-- Scripts modulaires : ordre de chargement important -->
+<script src="js/countries.js"></script>
 <script src="js/state.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/invoice.js"></script>

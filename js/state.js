@@ -8,6 +8,9 @@ const DEFAULT_STATE = {
         contact: "06 12 34 56 78 - contact@martin-studio.fr",
         iban: "FR76 1234 5678 9012 3456 7890 123",
         tvaExempt: true, // Default Micro-entrepreneur exemption
+        country: "FR",      // Pays fiscal de l'entreprise (voir js/countries.js)
+        currency: "EUR",    // Devise d'affichage (synchronisée avec le pays)
+        locale: "fr",       // Format des nombres (virgule/point, position du symbole)
         terms: "Paiement à 30 jours à compter de la date d'émission. Pas d'escompte pour paiement anticipé.",
         nextInvoiceSeq: 3
     },

@@ -31,8 +31,21 @@ function switchTab(tabId) {
     if (tabId === 'parametres') loadSettingsForm();
 }
 
+// Remplit la liste déroulante des pays groupés par région
+function populateCountrySelect() {
+    const sel = document.getElementById('set-country');
+    if (!sel) return;
+    const regions = { europe: '🇪🇺 Europe', afrique: '🌍 Afrique francophone', amerique: '🌎 Amériques', asie: '🌏 Asie-Pacifique' };
+    sel.innerHTML = Object.entries(regions).map(([key, label]) =>
+        `<optgroup label="${label}">` +
+        COUNTRIES.filter(c => c.region === key).map(c => `<option value="${c.code}">${c.name}</option>`).join('') +
+        '</optgroup>').join('');
+}
+
 window.onload = function() {
+    populateCountrySelect();
     initInvoiceForm();
     updateBadges();
     applyTvaDisplaySettings();
+    applyCountrySettings();
 };

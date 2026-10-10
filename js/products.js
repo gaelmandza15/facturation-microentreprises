@@ -8,7 +8,7 @@ function renderProductsTable() {
         tr.innerHTML = `
             <td class="cell-strong">${p.name}</td>
             <td class="cell-muted">${p.desc || '-'}</td>
-            <td class="text-right cell-mono cell-strong">${p.price.toFixed(2)} €</td>
+            <td class="text-right cell-mono cell-strong">${fmtMoney(p.price)}</td>
             <td class="text-center cell-mono class-tva-col">${p.tva || 0}%</td>
             <td class="text-right">
                 <button onclick="editProduct('${p.id}')" class="icon-btn" title="Modifier"><i class="fa-solid fa-pen"></i></button>

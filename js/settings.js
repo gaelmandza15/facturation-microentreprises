@@ -8,6 +8,12 @@ function loadSettingsForm() {
     document.getElementById('set-company-address').value = s.address || '';
     document.getElementById('set-company-iban').value = s.iban || '';
     document.getElementById('set-tva-exempt').checked = s.tvaExempt;
+    document.getElementById('set-country').value = s.country || 'FR';
+    populateCurrencySelect();
+    document.getElementById('set-currency').value = s.currency || currentCountry().currency;
+    document.getElementById('set-locale').value = s.locale || currentCountry().locale;
+    const euOnly = document.getElementById('eu-intra-note');
+    if (euOnly) euOnly.style.display = currentCountry().eu ? 'block' : 'none';
 }
 
 function saveSettings() {
@@ -18,8 +24,12 @@ function saveSettings() {
     state.settings.address = document.getElementById('set-company-address').value.trim();
     state.settings.iban = document.getElementById('set-company-iban').value.trim();
     state.settings.tvaExempt = document.getElementById('set-tva-exempt').checked;
+    state.settings.country = document.getElementById('set-country').value;
+    state.settings.currency = document.getElementById('set-currency').value;
+    state.settings.locale = document.getElementById('set-locale').value;
 
     saveState();
+    applyCountrySettings();
     renderSellerSummary();
     showToast("Profil entreprise mis à jour.");
 }
@@ -28,6 +38,48 @@ function toggleTvaRegime() {
     state.settings.tvaExempt = document.getElementById('set-tva-exempt').checked;
     saveState();
     calculateInvoiceTotals();
+}
+
+// Remplit la liste des devises compatibles avec le pays sélectionné
+function populateCurrencySelect() {
+    const sel = document.getElementById('set-currency');
+    const country = getCountry(document.getElementById('set-country')?.value || state.settings.country || 'FR');
+    const allowed = [country.currency];
+    // Les pays frontaliers/zone CFA partagent souvent plusieurs devises d'affichage : on autorise aussi EUR/USD en option
+    if (country.region === 'afrique') allowed.push('EUR', 'USD');
+    if (country.code === 'CA') allowed.push('USD');
+    if (country.code === 'GB') allowed.push('EUR');
+    if (country.code === 'CH') allowed.push('EUR');
+    sel.innerHTML = [...new Set(allowed)].map(c =>
+        `<option value="${c}">${CURRENCIES[c].code} (${CURRENCIES[c].symbol})</option>`).join('');
+}
+
+// Changement de pays : synchronise devise + format numérique par défaut
+function onCountryChange() {
+    const country = getCountry(document.getElementById('set-country').value);
+    state.settings.country = country.code;
+    state.settings.currency = country.currency;
+    state.settings.locale = country.locale;
+    populateCurrencySelect();
+    document.getElementById('set-currency').value = country.currency;
+    document.getElementById('set-locale').value = country.locale;
+    const euOnly = document.getElementById('eu-intra-note');
+    if (euOnly) euOnly.style.display = country.eu ? 'block' : 'none';
+    saveState();
+    applyCountrySettings();
+    showToast(`Pays : ${country.name} — devise ${country.currency}, mention TVA mise à jour.`);
+}
+
+function onCurrencyChange() {
+    state.settings.currency = document.getElementById('set-currency').value;
+    saveState();
+    applyCountrySettings();
+}
+
+function onLocaleChange() {
+    state.settings.locale = document.getElementById('set-locale').value;
+    saveState();
+    applyCountrySettings();
 }
 
 function applyTvaDisplaySettings() {
@@ -70,7 +122,12 @@ function importDataJSON(event) {
             const importedState = JSON.parse(e.target.result);
             if (importedState.settings && importedState.invoices) {
                 state = importedState;
+                // Migration : anciens exports JSON sans champs de localisation
+                state.settings.country = state.settings.country || "FR";
+                state.settings.currency = state.settings.currency || currentCountry().currency;
+                state.settings.locale = state.settings.locale || currentCountry().locale;
                 saveState();
+                applyCountrySettings();
                 initInvoiceForm();
                 showToast("Sauvegarde importée avec succès !");
             } else {
