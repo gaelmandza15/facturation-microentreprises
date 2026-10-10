@@ -14,6 +14,7 @@ function loadSettingsForm() {
     document.getElementById('set-locale').value = s.locale || currentCountry().locale;
     const euOnly = document.getElementById('eu-intra-note');
     if (euOnly) euOnly.style.display = currentCountry().eu ? 'block' : 'none';
+    renderCountryConfigForm();
 }
 
 function saveSettings() {
@@ -67,6 +68,7 @@ function onCountryChange() {
     if (euOnly) euOnly.style.display = country.eu ? 'block' : 'none';
     saveState();
     applyCountrySettings();
+    renderCountryConfigForm();
     showToast(`Pays : ${country.name} — devise ${country.currency}, mention TVA mise à jour.`);
 }
 
@@ -135,6 +137,7 @@ function importDataJSON(event) {
                 state.settings.country = state.settings.country || "FR";
                 state.settings.currency = state.settings.currency || currentCountry().currency;
                 state.settings.locale = state.settings.locale || currentCountry().locale;
+                state.settings.countryOverrides = state.settings.countryOverrides || {};
                 saveState();
                 applyCountrySettings();
                 initInvoiceForm();

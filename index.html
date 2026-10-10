@@ -174,9 +174,15 @@
                         </table>
                     </div>
 
-                    <button onclick="addInvoiceItemRow()" class="btn-secondary-pill btn-sm" style="margin-top:8px;">
-                        <i class="fa-solid fa-plus"></i> Ajouter une ligne personnalisée
-                    </button>
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-top:8px;">
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <label for="default-tva-rate" class="form-label" style="margin:0;white-space:nowrap;font-size:0.8rem;color:var(--text-muted);">Taux TVA par défaut des nouvelles lignes :</label>
+                            <select id="default-tva-rate" class="input-pill" style="width:auto;padding:6px 12px;"></select>
+                        </div>
+                        <button onclick="addInvoiceItemRow()" class="btn-secondary-pill btn-sm">
+                            <i class="fa-solid fa-plus"></i> Ajouter une ligne personnalisée
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Totals & Legal Notes -->
@@ -440,6 +446,50 @@
                     </div>
                     <div id="eu-intra-note" class="legal-notice" style="display:none;">
                         <i class="fa-solid fa-info-circle"></i> Pays UE : pour une prestation transfrontalière à un client professionnel, vérifiez l'autoliquidation (reverse charge) et mentionnez votre numéro de TVA intracommunautaire. Les seuils et taux affichés sont indicatifs — confirmez avec votre administration fiscale locale.
+                    </div>
+
+                    <!-- Configuration pays personnalisée : les réglementations changent, tout est modifiable -->
+                    <div style="border:1px solid var(--border-color);border-radius:var(--radius-card-sm);padding:20px;margin-top:16px;background:rgba(148,163,184,0.05);">
+                        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px;">
+                            <div class="form-card-title" style="margin-bottom:0;"><i class="fa-solid fa-sliders" style="color:var(--primary-blue);"></i> Configuration personnalisée du pays</div>
+                            <span id="oc-custom-badge" style="display:none;align-items:center;gap:6px;font-size:0.72rem;font-weight:700;color:var(--status-warning-text);background:rgba(245,158,11,0.12);padding:4px 10px;border-radius:999px;">
+                                <i class="fa-solid fa-pen"></i> Personnalisée
+                            </span>
+                        </div>
+                        <p class="form-card-subtitle">
+                            Les taux de TVA et mentions légales intégrés sont <strong>indicatifs</strong> : les réglementations évoluent en permanence.
+                            Modifiez librement ces valeurs si nécessaire — elles s'appliqueront immédiatement au pays sélectionné (taux proposés dans les lignes de facture, mention d'exonération imprimée, identifiant fiscal...).
+                        </p>
+                        <div class="section-grid cols-2">
+                            <div class="form-group">
+                                <label class="form-label" for="oc-vat-rates">Taux applicables (%) — séparés par des virgules</label>
+                                <input type="text" id="oc-vat-rates" class="input-pill" placeholder="0, 5.5, 10, 20">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="oc-taxid-label">Libellé de l'identifiant fiscal</label>
+                                <input type="text" id="oc-taxid-label" class="input-pill" placeholder="ex: SIRET, NINEA, EIN...">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="oc-taxid-placeholder">Format / exemple de cet identifiant</label>
+                                <input type="text" id="oc-taxid-placeholder" class="input-pill" placeholder="ex: 123 456 789 00012">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="oc-altid-label">Identifiant secondaire (vide = masqué)</label>
+                                <input type="text" id="oc-altid-label" class="input-pill" placeholder="ex: Code APE, RCCM...">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="oc-exempt-note">Mention légale d'exonération (imprimée sur la facture)</label>
+                            <textarea id="oc-exempt-note" class="input-pill" rows="2" placeholder="Franchise en base de TVA - TVA non applicable, art. 293 B du CGI."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="oc-late-note">Mention pénalités de retard (imprimée sur la facture)</label>
+                            <textarea id="oc-late-note" class="input-pill" rows="2" placeholder="En cas de retard de paiement..."></textarea>
+                        </div>
+                        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;">
+                            <button onclick="saveCountryOverrides()" class="btn-primary-pill"><i class="fa-solid fa-check"></i> Enregistrer la configuration pays</button>
+                            <button onclick="resetCountryConfig()" class="btn-secondary-pill"><i class="fa-solid fa-rotate-left"></i> Rétablir les valeurs par défaut</button>
+                        </div>
                     </div>
                 </div>
 

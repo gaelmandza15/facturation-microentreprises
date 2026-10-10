@@ -356,8 +356,74 @@ const COUNTRIES = [
 ];
 
 // --- Accès & helpers ---
+// Les réglementations évoluent en permanence : les valeurs ci-dessus ne sont que des
+// suggestions indicatives. L'utilisateur peut personnaliser (taux de TVA, mentions
+// légales, identifiant fiscal...) dans Paramètres > Configuration pays personnalisée.
+// Les overrides sont stockés dans state.settings.countryOverrides[code] et priment sur la base.
 function getCountry(code) {
-    return COUNTRIES.find(c => c.code === code) || COUNTRIES.find(c => c.code === "FR");
+    const base = COUNTRIES.find(c => c.code === code) || COUNTRIES.find(c => c.code === "FR");
+    const ov = (state.settings.countryOverrides || {})[base.code];
+    if (!ov) return base;
+    const merged = { ...base };
+    ["vatRates", "taxIdLabel", "taxIdPlaceholder", "altIdLabel", "exemptNote", "lateNote"].forEach(k => {
+        if (ov[k] !== undefined && ov[k] !== null && ov[k] !== "") merged[k] = ov[k];
+    });
+    merged.customized = true;
+    return merged;
+}
+
+// Réinitialise la configuration d'un pays aux valeurs indicatives par défaut
+function resetCountryConfig() {
+    const code = document.getElementById('set-country').value;
+    if (state.settings.countryOverrides) delete state.settings.countryOverrides[code];
+    saveState();
+    applyCountrySettings();
+    renderCountryConfigForm();
+    showToast(`Configuration de ${getCountry(code).name} réinitialisée (valeurs indicatives).`);
+}
+
+// Remplit le formulaire de personnalisation avec les valeurs actuelles du pays sélectionné
+function renderCountryConfigForm() {
+    const code = document.getElementById('set-country')?.value || state.settings.country || 'FR';
+    const country = getCountry(code);
+    const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+    setVal('oc-vat-rates', country.vatRates.join(', '));
+    setVal('oc-taxid-label', country.taxIdLabel);
+    setVal('oc-taxid-placeholder', country.taxIdPlaceholder);
+    setVal('oc-altid-label', country.altIdLabel || '');
+    setVal('oc-exempt-note', country.exemptNote);
+    setVal('oc-late-note', country.lateNote);
+    const badge = document.getElementById('oc-custom-badge');
+    if (badge) {
+        badge.style.display = country.customized ? 'inline-flex' : 'none';
+    }
+}
+
+// Enregistre les personnalisations du pays courant dans state.settings.countryOverrides
+function saveCountryOverrides() {
+    const code = document.getElementById('set-country').value;
+    if (!state.settings.countryOverrides) state.settings.countryOverrides = {};
+    const getVal = id => (document.getElementById(id)?.value || '').trim();
+    // Taux TVA : liste de nombres séparés par virgules/espaces/points-virgules
+    const rates = getVal('oc-vat-rates')
+        .split(/[,,;\s]+/).map(s => parseFloat(s.replace(',', '.')))
+        .filter(n => Number.isFinite(n) && n >= 0 && n < 100)
+        .sort((a, b) => a - b);
+    const ov = {
+        vatRates: rates.length ? [...new Set(rates)] : undefined,
+        taxIdLabel: getVal('oc-taxid-label') || undefined,
+        taxIdPlaceholder: getVal('oc-taxid-placeholder') || undefined,
+        altIdLabel: getVal('oc-altid-label'),
+        exemptNote: getVal('oc-exempt-note') || undefined,
+        lateNote: getVal('oc-late-note') || undefined
+    };
+    if (ov.altIdLabel === '') ov.altIdLabel = ''; // champ vide = colonne alternative masquée
+    Object.keys(ov).forEach(k => { if (ov[k] === undefined) delete ov[k]; });
+    state.settings.countryOverrides[code] = ov;
+    saveState();
+    applyCountrySettings();
+    renderCountryConfigForm();
+    showToast("Configuration pays personnalisée enregistrée.");
 }
 
 function currentCountry() {
@@ -408,6 +474,14 @@ function applyCountrySettings() {
         sel.innerHTML = country.vatRates.map(r => `<option value="${r}">${r}%</option>`).join("");
         if ([...sel.options].some(o => o.value === currentVal)) sel.value = currentVal;
     });
+
+    // Taux indicatif par défaut pour les nouvelles lignes (librement modifiable ensuite)
+    const defaultTvaSel = document.getElementById('default-tva-rate');
+    if (defaultTvaSel) {
+        const curVal = defaultTvaSel.value;
+        defaultTvaSel.innerHTML = country.vatRates.map(r => `<option value="${r}">${r}%</option>`).join("");
+        if ([...defaultTvaSel.options].some(o => o.value === curVal)) defaultTvaSel.value = curVal;
+    }
 
     // Mentions légales (exonération + retards)
     const exemptEl = document.getElementById('tva-legal-notice-display');

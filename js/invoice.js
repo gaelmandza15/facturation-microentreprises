@@ -67,7 +67,9 @@ function loadSelectedClientIntoInvoice() {
     }
 }
 
-function addInvoiceItemRow(desc = '', qty = 1, unitPrice = 0, tva = 0) {
+function addInvoiceItemRow(desc = '', qty = 1, unitPrice = 0, tva = null) {
+    // Taux par défaut : celui sélectionné "Taux TVA par défaut des nouvelles lignes"
+    if (tva === null) tva = parseFloat(document.getElementById('default-tva-rate')?.value) || 0;
     const tbody = document.getElementById('invoice-items-body');
     const rowId = 'item_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
 
