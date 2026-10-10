@@ -749,9 +749,18 @@ select.status-select.brouillon {
   font-size: 0.85rem;
   color: var(--text-muted);
   white-space: pre-line;
+  /* Espace réservé fixe : l'adresse ne peut pas "pousser" le pied de carte,
+     ce qui garantit que l'email et le bouton Facturer sont alignés au même
+     niveau vertical dans toutes les cartes de la grille. */
+  flex: 0 0 auto;
+  min-height: 3.4em; /* ~2 lignes */
+  max-height: 3.4em;
+  overflow: hidden;
+  margin: 0;
 }
 
 .client-card .client-footer {
+  margin-top: auto;
   border-top: 1px solid var(--border-color);
   padding-top: 14px;
   display: flex;
