@@ -1,4 +1,21 @@
 // Historique des factures : statistiques, recherche, filtre, édition, suppression.
+
+// Echappement HTML pour les champs saisis par l'utilisateur (rendu aperçu).
+function escHtml(s) {
+    return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+// Formatage court d'une date ISO (yyyy-mm-dd ou sauvegardée telle quelle)
+// dans la locale de l'interface ; retombe sur la valeur brute si non parsable.
+function fmtDateShort(iso) {
+    if (!iso) return '';
+    const d = new Date(iso + (iso.length === 10 ? 'T00:00:00' : ''));
+    if (isNaN(d)) return iso;
+    try {
+        return d.toLocaleDateString(currentLang() === 'fr' ? 'fr-FR' : 'en-US', { day: '2-digit', month: 'short', year: 'numeric' });
+    } catch (e) { return iso; }
+}
+
 function renderHistoryTable() {
     const tbody = document.getElementById('history-table-body');
     const search = document.getElementById('history-search').value.toLowerCase();
@@ -52,6 +69,7 @@ function renderHistoryTable() {
                 </select>
             </td>
             <td class="text-right">
+                <button onclick="previewSavedInvoice('${inv.id}')" title="${t('history.previewTitle')}" class="icon-btn"><i class="fa-solid fa-eye"></i></button>
                 <button onclick="loadInvoiceIntoEditor('${inv.id}')" title="${t('history.editTitle')}" class="icon-btn"><i class="fa-solid fa-pen-to-square"></i></button>
                 <button onclick="deleteInvoice('${inv.id}')" title="${t('history.deleteTitle')}" class="icon-btn danger"><i class="fa-solid fa-trash"></i></button>
             </td>

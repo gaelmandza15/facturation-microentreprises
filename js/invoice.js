@@ -221,62 +221,148 @@ function saveCurrentInvoice() {
     switchTab('historique');
 }
 
-function previewAndPrintInvoice() {
-    // Populate printable HTML template
+// ---- Apercu de la facture (modale feuille A4) : rendu pilote par les donnees ----
+
+function buildPreview(inv) {
     const s = state.settings;
-    document.getElementById('print-company-name').textContent = s.companyName;
-    document.getElementById('print-company-details').textContent = `${s.address}\n${currentCountry().taxIdLabel} : ${s.siret} ${s.ape ? ' - APE: ' + s.ape : ''}\n${s.contact}`;
-
-    document.getElementById('print-inv-number').textContent = document.getElementById('inv-number').value;
-    document.getElementById('print-inv-date').textContent = document.getElementById('inv-date').value;
-    document.getElementById('print-inv-duedate').textContent = document.getElementById('inv-duedate').value;
-
-    const clientName = document.getElementById('inv-client-name').value;
-    const clientAddress = document.getElementById('inv-client-address').value;
-    const clientSiret = document.getElementById('inv-client-siret').value;
-    document.getElementById('print-client-details').textContent = `${clientName}\n${clientAddress}${clientSiret ? '\n' + currentCountry().taxIdLabel + ' : ' + clientSiret : ''}`;
-
-    const tbody = document.getElementById('print-items-body');
-    tbody.innerHTML = '';
-
-    document.querySelectorAll('#invoice-items-body tr').forEach(row => {
-        const desc = row.querySelector('.item-desc').value;
-        const qty = row.querySelector('.item-qty').value;
-        const unitPrice = parseFloat(row.querySelector('.item-price').value).toFixed(2);
-        const tva = row.querySelector('.item-tva').value;
-        const totalHt = (qty * unitPrice).toFixed(2);
-
-        if (desc) {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">${desc}</td>
-                <td style="padding:10px 12px;text-align:center;border-bottom:1px solid #e2e8f0;">${qty}</td>
-                <td style="padding:10px 12px;text-align:right;font-variant-numeric:tabular-nums;border-bottom:1px solid #e2e8f0;">${fmtMoney(parseFloat(unitPrice))}</td>
-                <td class="print-tva-col" style="padding:10px 12px;text-align:center;font-variant-numeric:tabular-nums;border-bottom:1px solid #e2e8f0;">${tva}%</td>
-                <td style="padding:10px 12px;text-align:right;font-variant-numeric:tabular-nums;font-weight:700;border-bottom:1px solid #e2e8f0;">${fmtMoney(parseFloat(totalHt))}</td>
-            `;
-            tbody.appendChild(tr);
-        }
-    });
-
-    document.getElementById('print-subtotal-ht').textContent = document.getElementById('calc-subtotal-ht').textContent;
-    document.getElementById('print-discount').textContent = document.getElementById('calc-discount-val').textContent;
-    document.getElementById('print-tva').textContent = document.getElementById('calc-tva-total').textContent;
-    document.getElementById('print-total-net').textContent = document.getElementById('calc-total-net').textContent;
-
-    document.getElementById('print-iban').textContent = document.getElementById('inv-iban').value;
-    document.getElementById('print-terms').textContent = document.getElementById('inv-terms').value;
-
     const country = currentCountry();
-    if (s.tvaExempt) {
-        document.getElementById('print-tva-mention').textContent = country.exemptNote;
+    const $ = id => document.getElementById(id);
+
+    // Emetteur
+    $('print-company-name').textContent = s.companyName || '';
+    const issuerLines = [
+        s.address,
+        `${country.taxIdLabel} : ${s.siret}${country.altIdLabel && s.ape ? ' - ' + country.altIdLabel + ' : ' + s.ape : ''}`,
+        s.contact
+    ].filter(Boolean);
+    $('print-company-details').textContent = issuerLines.join('\n');
+
+    // Logo entreprise (data-URL stockee dans les reglements), optionnel
+    const logo = $('print-logo');
+    if (s.logo) { logo.src = s.logo; logo.classList.remove('hidden'); }
+    else { logo.removeAttribute('src'); logo.classList.add('hidden'); }
+
+    // Numero, dates, statut
+    $('print-inv-number').textContent = inv.number || '';
+    $('print-inv-date').textContent = fmtDateShort(inv.date);
+    $('print-inv-duedate').textContent = fmtDateShort(inv.dueDate);
+
+    const pill = $('print-status-pill');
+    if (inv.status) {
+        const cls = inv.status === 'Payée' ? 'payee' : inv.status === 'En attente' ? 'en-attente' : 'brouillon';
+        pill.textContent = statusLabel(inv.status);
+        pill.className = 'pi-status ' + cls;
     } else {
-        document.getElementById('print-tva-mention').textContent = country.eu
+        pill.className = 'pi-status hidden';
+    }
+
+    // Blocs De / Facture a
+    $('print-from-details').textContent = issuerLines.join('\n');
+    const clientLines = [
+        inv.clientName,
+        inv.clientAddress,
+        inv.clientSiret ? `${country.taxIdLabel} : ${inv.clientSiret}` : '',
+        inv.clientEmail
+    ].filter(Boolean);
+    $('print-client-details').textContent = clientLines.join('\n');
+
+    // Lignes de prestation
+    const rows = (inv.items || []).filter(it => it.desc);
+    $('print-items-body').innerHTML = rows.map((it, i) => `
+        <tr>
+            <td class="pi-num">${i + 1}</td>
+            <td>${escHtml(it.desc)}</td>
+            <td class="center num">${escHtml(it.qty)}</td>
+            <td class="right num">${fmtMoney(it.unitPrice)}</td>
+            <td class="print-tva-col center num">${escHtml(it.tva)}%</td>
+            <td class="right num line-total">${fmtMoney(it.totalHt)}</td>
+        </tr>`).join('');
+
+    // Totaux
+    $('print-subtotal-ht').textContent = fmtMoney(inv.subtotalHt);
+    const discRow = $('print-discount-row');
+    if (inv.discountPercent > 0) {
+        $('print-discount').textContent = '-' + fmtMoney(inv.discountVal) + ' (' + inv.discountPercent + '%)';
+        discRow.classList.remove('hidden');
+    } else {
+        discRow.classList.add('hidden');
+    }
+    $('print-tva').textContent = fmtMoney(inv.tvaTotal);
+    $('print-total-net').textContent = fmtMoney(inv.totalNet);
+
+    // IBAN & conditions
+    const ibanBox = $('print-iban-box');
+    if (inv.iban) { $('print-iban').textContent = inv.iban; ibanBox.classList.remove('hidden'); }
+    else { ibanBox.classList.add('hidden'); }
+    $('print-terms').textContent = inv.terms || '';
+
+    // Mentions legales localisees
+    if (s.tvaExempt) {
+        $('print-tva-mention').textContent = country.exemptNote;
+    } else {
+        $('print-tva-mention').textContent = country.eu
             ? t("print.tvaPaidNote")
             : t("print.otherTaxNote").replace("{country}", country.name);
     }
     document.querySelector(".print-late-note").textContent = country.lateNote;
-    document.getElementById('print-footer-siret').textContent = `${s.companyName} - ${country.taxIdLabel} : ${s.siret}${country.altIdLabel && s.ape ? ' - ' + country.altIdLabel + ' : ' + s.ape : ''}`;
+    $('print-footer-siret').textContent = `${s.companyName} - ${country.taxIdLabel} : ${s.siret}${country.altIdLabel && s.ape ? ' - ' + country.altIdLabel + ' : ' + s.ape : ''}`;
+}
 
+function collectInvoiceFromForm() {
+    const items = [];
+    document.querySelectorAll('#invoice-items-body tr').forEach(row => {
+        const desc = row.querySelector('.item-desc').value.trim();
+        const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+        const unitPrice = parseFloat(row.querySelector('.item-price').value) || 0;
+        const tva = parseFloat(row.querySelector('.item-tva').value) || 0;
+        if (desc) items.push({ desc, qty, unitPrice, tva, totalHt: qty * unitPrice });
+    });
+
+    const rawSubtotalHt = items.reduce((a, it) => a + it.totalHt, 0);
+    const rawTvaTotal = state.settings.tvaExempt ? 0 : items.reduce((a, it) => a + it.totalHt * (it.tva / 100), 0);
+    const discountPercent = parseFloat(document.getElementById('inv-discount').value) || 0;
+    const discountVal = rawSubtotalHt * (discountPercent / 100);
+    const tvaTotal = (!state.settings.tvaExempt && discountPercent > 0) ? rawTvaTotal * (1 - discountPercent / 100) : rawTvaTotal;
+
+    return {
+        number: document.getElementById('inv-number').value.trim(),
+        date: document.getElementById('inv-date').value,
+        dueDate: document.getElementById('inv-duedate').value,
+        status: document.getElementById('inv-status').value,
+        clientName: document.getElementById('inv-client-name').value.trim(),
+        clientAddress: document.getElementById('inv-client-address').value,
+        clientSiret: document.getElementById('inv-client-siret').value,
+        clientEmail: document.getElementById('inv-client-email').value,
+        items,
+        subtotalHt: rawSubtotalHt,
+        discountPercent,
+        discountVal,
+        tvaTotal,
+        totalNet: (rawSubtotalHt - discountVal) + (state.settings.tvaExempt ? 0 : tvaTotal),
+        terms: document.getElementById('inv-terms').value,
+        iban: document.getElementById('inv-iban').value
+    };
+}
+
+function openInvoicePreview() {
+    buildPreview(collectInvoiceFromForm());
+    document.getElementById('modal-preview').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function previewSavedInvoice(id) {
+    const inv = state.invoices.find(i => i.id === id);
+    if (!inv) return;
+    buildPreview(inv);
+    document.getElementById('modal-preview').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeInvoicePreview() {
+    document.getElementById('modal-preview').classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+function printInvoiceFromPreview() {
     desktopPrint();
 }

@@ -1056,47 +1056,308 @@ select.status-select.brouillon {
 .info-panel .panel-label button:hover { text-decoration: underline; }
 
 /* ==========================================================================
-   STYLES D'IMPRESSION (FACTURE CLEAN EN PARFAIT FORMAT PAPIER/PDF)
+   APERCU DE LA FACTURE (feuille A4 fidele au rendu papier/PDF)
    ========================================================================== */
 
-#printable-invoice {
-  font-family: var(--font-family);
-  color: var(--text-main);
-  background: #ffffff;
+.preview-overlay { z-index: 60; padding: 12px; }
+
+.preview-shell {
+  background-color: #e9ebf2;
+  border-radius: var(--radius-card);
+  width: 100%;
+  max-width: 940px;
+  height: min(92vh, 100%);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(2, 6, 23, 0.35);
 }
 
-#printable-invoice.hidden { display: none; }
+.preview-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
 
+.preview-title { font-weight: 800; color: var(--text-main); font-size: 0.95rem; }
+.preview-title i { color: var(--primary-blue); margin-right: 6px; }
+.preview-actions { display: flex; align-items: center; gap: 10px; }
+
+.btn-sm { padding: 8px 16px; font-size: 0.82rem; }
+
+.preview-scroll {
+  overflow-y: auto;
+  padding: 28px clamp(14px, 4vw, 40px);
+  display: flex;
+  justify-content: center;
+}
+
+/* Feuille A4 */
+.paper-sheet {
+  --pi-accent: var(--primary-blue);
+  background: #ffffff;
+  width: 210mm;
+  max-width: 100%;
+  min-height: 297mm;
+  padding: 18mm 16mm 14mm;
+  box-sizing: border-box;
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.18);
+  border-radius: 4px;
+  font-family: var(--font-family);
+  color: #1f2937;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.pi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  padding-bottom: 18px;
+  border-bottom: 3px solid var(--pi-accent);
+}
+
+.pi-brand { display: flex; align-items: flex-start; gap: 14px; min-width: 0; }
+
+.pi-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.pi-brand h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #0f172a;
+  white-space: pre-line;
+}
+
+.pi-brand p {
+  margin: 6px 0 0;
+  font-size: 11.5px;
+  color: #64748b;
+  white-space: pre-line;
+}
+
+.pi-meta { text-align: right; flex-shrink: 0; }
+
+.pi-badge {
+  display: inline-block;
+  background: var(--pi-accent);
+  color: #fff;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+.pi-status {
+  display: inline-block;
+  margin-top: 8px;
+  font-weight: 700;
+  font-size: 10.5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.pi-status.payee      { background: var(--status-success-bg); color: var(--status-success-text); }
+.pi-status.en-attente { background: var(--status-warning-bg); color: var(--status-warning-text); }
+.pi-status.brouillon  { background: var(--status-draft-bg);   color: var(--status-draft-text); }
+
+.pi-meta h2 {
+  margin: 10px 0 4px;
+  font-size: 17px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.pi-dates { margin: 0; font-size: 11.5px; }
+.pi-dates div { display: flex; justify-content: flex-end; gap: 8px; margin-top: 2px; }
+.pi-dates dt { color: #64748b; }
+.pi-dates dd { margin: 0; font-weight: 700; color: #1f2937; }
+
+.pi-parties {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 18px;
+  margin: 24px 0;
+}
+
+.pi-party {
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 12.5px;
+  white-space: pre-line;
+}
+
+.pi-from { background: #f8fafc; border: 1px solid #e2e8f0; color: #475569; }
+.pi-to   { background: #eff6ff; border: 1px solid #dbeafe; }
+
+.pi-party-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+
+.pi-to .pi-party-label { color: var(--pi-accent); }
+
+.pi-table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+
+.pi-table th {
+  background: #0f172a;
+  color: #fff;
+  text-align: left;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 10px 12px;
+}
+
+.pi-table th.center { text-align: center; }
+.pi-table th.right  { text-align: right; }
+.pi-table th:first-child { border-radius: 8px 0 0 8px; }
+.pi-table th:last-child  { border-radius: 0 8px 8px 0; }
+
+.pi-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eef2f7;
+  vertical-align: top;
+}
+
+.pi-table tbody tr:nth-child(even) { background: #f8fafc; }
+.pi-table .pi-num { color: #94a3b8; font-weight: 700; width: 28px; }
+.pi-table .center { text-align: center; }
+.pi-table .right  { text-align: right; }
+.pi-table .num { font-variant-numeric: tabular-nums; }
+.pi-table .line-total { font-weight: 700; }
+
+.pi-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 22px;
+  margin-top: 22px;
+  align-items: start;
+}
+
+.pi-iban-box {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 11.5px;
+  margin-bottom: 10px;
+}
+
+.pi-iban-label { display: block; font-weight: 700; color: #15803d; margin-bottom: 2px; }
+.pi-iban { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing: 0.04em; color: #14532d; word-break: break-all; }
+
+.pi-terms { font-size: 11.5px; color: #475569; white-space: pre-line; }
+
+.pi-totals {
+  margin-left: auto;
+  width: 100%;
+  max-width: 280px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.pi-total-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 9px 14px;
+  font-size: 12px;
+  color: #475569;
+}
+
+.pi-total-row > span:last-child { font-variant-numeric: tabular-nums; font-weight: 700; color: #1f2937; }
+.pi-total-row.discount > span:last-child { color: #dc2626; }
+
+.pi-total-row.net {
+  background: #0f172a;
+  color: #fff;
+  font-weight: 800;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 13px 14px;
+}
+
+.pi-total-row.net > span:last-child { color: #fff; font-size: 15px; }
+
+.pi-footer {
+  margin-top: 30px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e8f0;
+  font-size: 10px;
+  color: #94a3b8;
+  text-align: center;
+}
+
+.pi-footer p { margin: 4px 0; }
+.pi-strong { font-weight: 700; color: #64748b; }
+.pi-footer-id { font-style: italic; }
+
+/* Colonnes TVA masquees en franchise (regle existante + aperçu modifie apres sauvegarde du reglement) */
+body.tva-exempt .print-tva-col { display: none !important; }
+#modal-preview:not(.hidden) .print-tva-col { display: revert; }
+
+.hidden { display: none !important; }
+
+@media (max-width: 900px) {
+  .preview-shell { max-width: 100%; height: 100%; border-radius: 0; }
+  .preview-overlay { padding: 0; }
+}
+
+/* Impression : uniquement la feuille, sans le chrome de l'application ni de la modale */
 @media print {
-  body {
-    background-color: #ffffff !important;
-    padding: 0 !important;
+  @page { size: A4; margin: 0; }
+
+  html, body {
+    background: #fff !important;
     height: auto !important;
     overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
-  .sidebar,
-  .top-header,
-  .no-print {
-    display: none !important;
-  }
+  body * { visibility: hidden !important; }
 
-  .app-container {
-    display: block !important;
-    max-width: 100% !important;
-    height: auto !important;
-  }
+  #modal-preview, #modal-preview.hidden { display: block !important; }
+  #modal-preview { position: static !important; background: none !important; backdrop-filter: none !important; padding: 0 !important; inset: auto !important; }
+  .preview-shell { display: block !important; max-width: none !important; width: auto !important; height: auto !important; overflow: visible !important; box-shadow: none !important; border-radius: 0 !important; background: none !important; }
+  .preview-toolbar, .no-print { display: none !important; }
+  .preview-scroll { display: block !important; overflow: visible !important; padding: 0 !important; }
 
-  #printable-invoice {
-    display: block !important;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
+  .paper-sheet, .paper-sheet * { visibility: visible !important; }
+
+  .paper-sheet {
+    width: 210mm;
+    min-height: auto;
     margin: 0;
-    padding: 20px;
-    background: white;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
-  .modal-overlay { display: none !important; }
+  .sidebar, .top-header, .app-container > *:not(#modal-preview) { display: none !important; }
 }

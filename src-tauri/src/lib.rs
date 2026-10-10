@@ -8,7 +8,7 @@
 //   2. une fenetre demarree cachee (visible:false), affichee par le frontend
 //      quand l'UI est prete -> pas de flash blanc au lancement ;
 //   3. un filet de securite : si le JS ne s'est jamais initialise (erreur de
-//      chargement), la fenetre s'affiche apres 3 s au lieu de rester invisible.
+//      chargement), la fenetre s'affiche apres 1,5 s au lieu de rester invisible.
 
 use std::path::PathBuf;
 use tauri::{Manager, WebviewWindow};
@@ -88,12 +88,14 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .setup(|app| {
-            // Filet de securite : affichage force au plus tard 3 s apres le
-            // lancement, meme si Desktop.signalReady() n'a jamais ete appele.
+            // Filet de securite : affichage au plus tard 1,5 s apres le
+            // lancement. show()/set_focus() sont idempotents : si le frontend
+            // a deja affiche la fenetre (Desktop.signalReady), cet appel ne
+            // change rien ; sinon il evite que la fenetre reste invisible.
             if let Some(w) = app.get_webview_window("main") {
                 let w2 = w.clone();
                 std::thread::spawn(move || {
-                    std::thread::sleep(std::time::Duration::from_secs(3));
+                    std::thread::sleep(std::time::Duration::from_millis(1500));
                     let _ = w2.show();
                     let _ = w2.set_focus();
                 });

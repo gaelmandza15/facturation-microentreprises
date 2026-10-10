@@ -75,7 +75,7 @@ const I18N = {
         "invoice.netToPay": "NET AMOUNT DUE:",
         "invoice.status": "Status:",
         "invoice.reset": "Reset",
-        "invoice.print": "Preview & Print / PDF",
+        "invoice.preview": "Invoice preview",
         "invoice.save": "Save Invoice",
 
         // Invoice statuses
@@ -204,7 +204,11 @@ const I18N = {
         "print.tva": "VAT:",
 
         // Printable invoice overlay
+        "preview.title": "Invoice preview",
+        "preview.print": "Print / PDF",
+        "history.previewTitle": "Preview",
         "print.badge": "INVOICE",
+        "print.from": "From:",
         "print.date": "Date:",
         "print.due": "Due date:",
         "print.billTo": "BILLED TO:",
@@ -314,7 +318,7 @@ const I18N = {
         "invoice.netToPay": "NET À PAYER :",
         "invoice.status": "Statut :",
         "invoice.reset": "Réinitialiser",
-        "invoice.print": "Aperçu & Imprimer / PDF",
+        "invoice.preview": "Aperçu de la facture",
         "invoice.save": "Enregistrer la Facture",
 
         "status.draft": "Brouillon",
@@ -435,7 +439,11 @@ const I18N = {
         "print.discount": "Remise :",
         "print.tva": "TVA :",
 
+        "preview.title": "Aperçu de la facture",
+        "preview.print": "Imprimer / PDF",
+        "history.previewTitle": "Aperçu",
         "print.badge": "FACTURE",
+        "print.from": "De :",
         "print.date": "Date :",
         "print.due": "Échéance :",
         "print.billTo": "FACTURÉ À :",

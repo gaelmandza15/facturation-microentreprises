@@ -50,5 +50,14 @@ window.onload = function() {
     updateBadges();
     applyTvaDisplaySettings();
     applyCountrySettings();
+    restoreActiveTab(); // revient sur l'onglet où l'utilisateur se trouvait avant rechargement
     Desktop.signalReady(); // en app Tauri : affiche la fenêtre une fois l'UI prête (pas de flash blanc)
 };
+
+// Restaure l'onglet actif mémorisé juste avant un rechargement/une fermeture
+// (clé localStorage posée par js/desktop.js). Sans clé -> onglet « facture ».
+function restoreActiveTab() {
+    let tab = null;
+    try { tab = localStorage.getItem('factura_micro_active_tab'); } catch (e) { /* stockage indisponible */ }
+    if (tab && document.getElementById(`tab-${tab}`)) switchTab(tab);
+}
