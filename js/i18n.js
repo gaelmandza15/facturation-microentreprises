@@ -23,7 +23,6 @@ const I18N = {
         "footer.local": "Local",
 
         // Header
-        "header.resetDemo": "Sample Data",
         "header.newInvoice": "New Invoice",
 
         // Page titles & subtitles (tab switching)
@@ -238,8 +237,6 @@ const I18N = {
         "toast.importOk": "Backup imported successfully!",
         "toast.importInvalid": "Invalid JSON file.",
         "toast.importError": "Error while reading the JSON file.",
-        "toast.confirmResetDemo": "Reset the data with the demonstration samples?",
-        "toast.demoReset": "Sample data reset!",
         "toast.countryConfigSaved": "Custom country configuration saved.",
         "toast.countryConfigReset": "{name} configuration reset (indicative values).",
         "toast.openTutorial": "Opening the interactive video tutorial...",
@@ -267,7 +264,6 @@ const I18N = {
         "footer.autosave": "Sauvegarde auto :",
         "footer.local": "Locale",
 
-        "header.resetDemo": "Données d'exemple",
         "header.newInvoice": "Nouvelle Facture",
 
         "title.facture": "Générateur de Facture",
@@ -471,8 +467,6 @@ const I18N = {
         "toast.importOk": "Sauvegarde importée avec succès !",
         "toast.importInvalid": "Fichier JSON invalide.",
         "toast.importError": "Erreur lors de la lecture du fichier JSON.",
-        "toast.confirmResetDemo": "Réinitialiser les données avec les exemples de démonstration ?",
-        "toast.demoReset": "Données d'exemple réinitialisées !",
         "toast.countryConfigSaved": "Configuration pays personnalisée enregistrée.",
         "toast.countryConfigReset": "Configuration de {name} réinitialisée (valeurs indicatives).",
         "toast.openTutorial": "Ouverture du tutoriel vidéo interactif...",

@@ -152,12 +152,3 @@ function importDataJSON(event) {
     fileReader.readAsText(event.target.files[0]);
 }
 
-function resetDataModal() {
-    if (confirm(t("toast.confirmResetDemo"))) {
-        state = JSON.parse(JSON.stringify(DEFAULT_STATE));
-        saveState();
-        initInvoiceForm();
-        switchTab('facture');
-        showToast(t("toast.demoReset"));
-    }
-}
