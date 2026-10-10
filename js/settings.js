@@ -89,12 +89,14 @@ function applyTvaDisplaySettings() {
     if (isExempt) {
         badge.textContent = "Exonéré";
         badge.style.color = "var(--status-success-text)";
+        document.body.classList.add('tva-exempt');
         document.querySelectorAll('.class-tva-col').forEach(el => el.style.display = 'none');
         document.querySelectorAll('.print-tva-col').forEach(el => el.style.display = 'none');
         document.getElementById('tva-legal-notice-display').style.display = 'block';
     } else {
         badge.textContent = "Assujetti TVA";
         badge.style.color = "var(--status-warning-text)";
+        document.body.classList.remove('tva-exempt');
         document.querySelectorAll('.class-tva-col').forEach(el => el.style.display = '');
         document.querySelectorAll('.print-tva-col').forEach(el => el.style.display = '');
         document.getElementById('tva-legal-notice-display').style.display = 'none';

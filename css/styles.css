@@ -605,6 +605,36 @@ select.input-pill {
   border-spacing: 0 10px;
 }
 
+/* Tableau des lignes de facture : largeurs fixes pour éviter que la colonne
+   Description ne rétrécisse quand on ajoute une ligne, ce qui écrasait les
+   colonnes Qté / Prix / Total et masquait leur contenu */
+/* Les colonnes/éléments TVA sont masqués via la classe 'hidden' ajoutée par
+   settings.js (display:none important). Le body porte 'tva-exempt' pour que
+   les règles s'appliquent aussi aux lignes de facture créées dynamiquement. */
+body.tva-exempt .class-tva-col,
+body.tva-exempt .print-tva-col { display: none !important; }
+
+.invoice-items-table {
+  table-layout: fixed;
+}
+
+.invoice-items-table th:nth-child(1),
+.invoice-items-table td:nth-child(1) { width: auto; }
+.invoice-items-table th:nth-child(2),
+.invoice-items-table td:nth-child(2) { width: 90px; }
+.invoice-items-table th:nth-child(3),
+.invoice-items-table td:nth-child(3) { width: 130px; }
+.invoice-items-table th:nth-child(4),
+.invoice-items-table td:nth-child(4) { width: 95px; }
+.invoice-items-table th:nth-child(5),
+.invoice-items-table td:nth-child(5) { width: 120px; }
+.invoice-items-table th:nth-child(6),
+.invoice-items-table td:nth-child(6) { width: 60px; }
+
+.invoice-items-table .item-input {
+  min-width: 0;
+}
+
 .custom-table th {
   color: var(--text-muted);
   font-size: 0.8rem;
