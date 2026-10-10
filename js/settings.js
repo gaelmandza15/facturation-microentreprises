@@ -102,8 +102,15 @@ function applyTvaDisplaySettings() {
 }
 
 function updateBadges() {
-    document.getElementById('badge-invoice-count').textContent = state.invoices.length;
-    document.getElementById('badge-client-count').textContent = state.clients.length;
+    // Badge "Historique Factures" : nombre total de factures enregistrées
+    const badgeInv = document.getElementById('badge-invoice-count');
+    badgeInv.textContent = state.invoices.length;
+    badgeInv.style.display = state.invoices.length === 0 ? 'none' : '';
+
+    // Badge "Fichier Clients" : nombre total de clients enregistrés
+    const badgeCli = document.getElementById('badge-client-count');
+    badgeCli.textContent = state.clients.length;
+    badgeCli.style.display = state.clients.length === 0 ? 'none' : '';
 }
 
 function exportDataJSON() {
