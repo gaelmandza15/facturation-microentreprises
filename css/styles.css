@@ -275,7 +275,9 @@ body {
   padding: 24px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 16px;
   min-height: 140px;
 }
 
@@ -304,7 +306,7 @@ body {
   font-weight: 800;
   color: var(--text-main);
   letter-spacing: -0.03em;
-  margin-top: 12px;
+  margin-top: 0;
 }
 
 /* Carte Bleu Gradient Référence */
