@@ -50,4 +50,5 @@ window.onload = function() {
     updateBadges();
     applyTvaDisplaySettings();
     applyCountrySettings();
+    Desktop.signalReady(); // en app Tauri : affiche la fenêtre une fois l'UI prête (pas de flash blanc)
 };

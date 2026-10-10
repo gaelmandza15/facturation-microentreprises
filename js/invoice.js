@@ -278,5 +278,5 @@ function previewAndPrintInvoice() {
     document.querySelector(".print-late-note").textContent = country.lateNote;
     document.getElementById('print-footer-siret').textContent = `${s.companyName} - ${country.taxIdLabel} : ${s.siret}${country.altIdLabel && s.ape ? ' - ' + country.altIdLabel + ' : ' + s.ape : ''}`;
 
-    window.print();
+    desktopPrint();
 }

@@ -1,0 +1,26 @@
+[package]
+name = "facturamicro"
+version = "1.0.0"
+description = "FacturaMicro — Facturation pour micro-entreprises (multi-pays, multi-langues, 100% local)"
+authors = ["gaelmandza15"]
+edition = "2021"
+rust-version = "1.77.2"
+
+[lib]
+name = "facturamicro_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true

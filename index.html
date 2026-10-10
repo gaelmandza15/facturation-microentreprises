@@ -515,7 +515,7 @@
                         <button onclick="exportDataJSON()" class="btn-dark-pill">
                             <i class="fa-solid fa-download"></i> <span data-i18n="settings.export">Exporter toutes les données (JSON)</span>
                         </button>
-                        <label class="btn-secondary-pill" style="cursor:pointer;">
+                        <label class="btn-secondary-pill" style="cursor:pointer;" onclick="if (window.Desktop && Desktop.isDesktop) { event.preventDefault(); importDataJSON(); }">
                             <i class="fa-solid fa-upload"></i> <span data-i18n="settings.import">Importer une sauvegarde (JSON)</span>
                             <input type="file" id="import-file-input" onchange="importDataJSON(event)" class="hidden" style="display:none;" accept=".json">
                         </label>
@@ -725,6 +725,7 @@
 
 <!-- Scripts modulaires : ordre de chargement important -->
 <script src="js/countries.js"></script>
+<script type="module" src="js/desktop.js"></script>
 <script src="js/state.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/invoice.js"></script>

@@ -2,9 +2,14 @@
   "name": "facturation-microentreprises",
   "private": true,
   "scripts": {
-    "check-i18n": "node scripts/check-i18n.js"
+    "check-i18n": "node scripts/check-i18n.js",
+    "tauri": "tauri"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "^2",
     "jsdom": "^29.1.1"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.12.3"
   }
 }

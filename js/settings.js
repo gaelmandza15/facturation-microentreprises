@@ -117,38 +117,68 @@ function updateBadges() {
     badgeCli.style.display = state.clients.length === 0 ? 'none' : '';
 }
 
-function exportDataJSON() {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+// Nom de fichier standard pour les sauvegardes (identique web et desktop).
+function backupFileName() {
+    return `facturamicro_backup_${new Date().toISOString().split('T')[0]}.json`;
+}
+
+async function exportDataJSON() {
+    const json = JSON.stringify(state, null, 2);
+    if (Desktop.isDesktop) {
+        // En application desktop : vraie boite de dialogue "Enregistrer sous..." native.
+        try {
+            const path = await desktopSaveBackup(backupFileName(), json);
+            if (path) showToast(t("toast.exportSavedTo") + " " + path);
+            // path === null : l'utilisateur a annulé, aucun message.
+        } catch (err) {
+            showToast(String(err), "error");
+        }
+        return;
+    }
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(json);
     const dlAnchorElem = document.createElement('a');
     dlAnchorElem.setAttribute("href", dataStr);
-    dlAnchorElem.setAttribute("download", `facturamicro_backup_${new Date().toISOString().split('T')[0]}.json`);
+    dlAnchorElem.setAttribute("download", backupFileName());
     dlAnchorElem.click();
     showToast(t("toast.exportDownloaded"));
 }
 
-function importDataJSON(event) {
-    const fileReader = new FileReader();
-    fileReader.onload = function (e) {
-        try {
-            const importedState = JSON.parse(e.target.result);
-            if (importedState.settings && importedState.invoices) {
-                state = importedState;
-                // Migration : anciens exports JSON sans champs de localisation
-                state.settings.country = state.settings.country || "FR";
-                state.settings.currency = state.settings.currency || currentCountry().currency;
-                state.settings.locale = state.settings.locale || currentCountry().locale;
-                state.settings.countryOverrides = state.settings.countryOverrides || {};
-                saveState();
-                applyCountrySettings();
-                initInvoiceForm();
-                showToast(t("toast.importOk"));
-            } else {
-                showToast(t("toast.importInvalid"), "error");
-            }
-        } catch (err) {
-            showToast(t("toast.importError"), "error");
+// Applique un état importé (partagé entre input file web et dialogue natif desktop).
+function applyImportedState(rawText) {
+    try {
+        const importedState = JSON.parse(rawText);
+        if (importedState.settings && importedState.invoices) {
+            state = importedState;
+            // Migration : anciens exports JSON sans champs de localisation
+            state.settings.country = state.settings.country || "FR";
+            state.settings.currency = state.settings.currency || currentCountry().currency;
+            state.settings.locale = state.settings.locale || currentCountry().locale;
+            state.settings.countryOverrides = state.settings.countryOverrides || {};
+            saveState();
+            applyCountrySettings();
+            initInvoiceForm();
+            showToast(t("toast.importOk"));
+        } else {
+            showToast(t("toast.importInvalid"), "error");
         }
-    };
+    } catch (err) {
+        showToast(t("toast.importError"), "error");
+    }
+}
+
+async function importDataJSON(event) {
+    // En desktop : bouton unique -> dialogue natif "Ouvrir" (l'input file caché n'est pas utilisé).
+    if (Desktop.isDesktop && (!event || !event.target || !event.target.files || event.target.files.length === 0)) {
+        try {
+            const content = await desktopOpenBackup();
+            if (content !== null) applyImportedState(content);
+        } catch (err) {
+            showToast(String(err), "error");
+        }
+        return;
+    }
+    const fileReader = new FileReader();
+    fileReader.onload = function (e) { applyImportedState(e.target.result); };
     fileReader.readAsText(event.target.files[0]);
 }
 
